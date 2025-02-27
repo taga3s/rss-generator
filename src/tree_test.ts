@@ -1,11 +1,20 @@
-import { createTextNode, createXMLNode, TextNode, XMLNode } from "./tree.ts";
+import { createValueNode, createXMLNode, ValueNode, XMLNode } from "./tree.ts";
 import { assertEquals } from "@std/assert";
 
-Deno.test("it should return TextNode", () => {
-  const node = createTextNode("example");
-  const expected: TextNode = {
-    type: "text",
+Deno.test("it should return ValueNode when typeof value === 'string'", () => {
+  const node = createValueNode("example");
+  const expected: ValueNode = {
+    type: "value",
     value: "example",
+  };
+  assertEquals(node, expected);
+});
+
+Deno.test("it should return ValueNode when typeof value === 'number'", () => {
+  const node = createValueNode(1);
+  const expected: ValueNode = {
+    type: "value",
+    value: 1,
   };
   assertEquals(node, expected);
 });
@@ -16,7 +25,7 @@ Deno.test("it should return XMLNode", () => {
     type: "node",
     tagName: "example",
     children: [{
-      type: "text",
+      type: "value",
       value: "example1",
     }],
   };

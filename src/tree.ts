@@ -1,5 +1,10 @@
-import { XMLObj } from "./input-data.ts";
-import { isPlainObject } from "./utils.ts";
+import {
+  isNumberValue,
+  isStringValue,
+  isXMLObj,
+  Value,
+  XMLObj,
+} from "./input-data.ts";
 
 interface Node {
   type: string;
@@ -8,26 +13,26 @@ interface Node {
 interface XMLNode extends Node {
   type: "node";
   tagName: string;
+  children: (XMLNode | ValueNode)[];
   attributes?: { [key: string]: string };
-  children?: (XMLNode | TextNode)[];
 }
 
-interface TextNode extends Node {
-  type: "text";
-  value: string;
+interface ValueNode extends Node {
+  type: "value";
+  value: string | number;
 }
 
-const createXMLNode = (name: string, value: XMLObj | string): XMLNode => {
+const createXMLNode = (name: string, input: XMLObj | Value): XMLNode => {
   return ({
     type: "node",
     tagName: name,
-    children: createNodes(value),
+    children: createNodes(input),
   });
 };
 
-const createTextNode = (value: string): TextNode => ({
-  type: "text",
-  value: value,
+const createValueNode = (input: Value): ValueNode => ({
+  type: "value",
+  value: input,
 });
 
 const createXMLNodes = (input: XMLObj): XMLNode[] => {
@@ -48,16 +53,18 @@ const createXMLNodes = (input: XMLObj): XMLNode[] => {
   return nodes;
 };
 
-const createTextNodes = (value: string): TextNode[] => [createTextNode(value)];
+const createValueNodes = (
+  input: Value,
+): ValueNode[] => [createValueNode(input)];
 
-const createNodes = (input: XMLObj | string): (XMLNode | TextNode)[] => {
+const createNodes = (input: XMLObj | Value): (XMLNode | ValueNode)[] => {
   // If the input is a string, create a text node
-  if (typeof input === "string") {
-    return createTextNodes(input);
+  if (isStringValue(input) || isNumberValue(input)) {
+    return createValueNodes(input);
   }
 
   // If the input is an object, create multiple nodes
-  if (isPlainObject(input)) {
+  if (isXMLObj(input)) {
     return createXMLNodes(input);
   }
 
@@ -69,5 +76,5 @@ const createNodes = (input: XMLObj | string): (XMLNode | TextNode)[] => {
  */
 const createXMLTree = (input: XMLObj): XMLNode[] => createXMLNodes(input);
 
-export { createNodes, createTextNode, createXMLNode, createXMLTree };
-export type { TextNode, XMLNode };
+export { createNodes, createValueNode, createXMLNode, createXMLTree };
+export type { ValueNode, XMLNode };
