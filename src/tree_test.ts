@@ -41,3 +41,16 @@ Deno.test("it should return self closing tag node", () => {
   };
   assertEquals(node, expected);
 });
+
+Deno.test("it should return XMLNode with attributes", () => {
+  const node = createXMLNode("example", { "@version": "2.0" });
+  const expected: XMLNode = {
+    type: "node",
+    tagName: "example",
+    attributes: {
+      "version": "2.0",
+    },
+    children: [],
+  };
+  assertEquals(node, expected);
+});

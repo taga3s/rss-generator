@@ -1,10 +1,11 @@
 import {
+  isArrayOfStringValue,
   isNumberValue,
   isStringValue,
   isXMLObj,
   Value,
   XMLObj,
-} from "./input-data.ts";
+} from "./input_data.ts";
 
 interface Node {
   type: string;
@@ -23,6 +24,28 @@ interface ValueNode extends Node {
 }
 
 const createXMLNode = (name: string, input: XMLObj | Value): XMLNode => {
+  if (isXMLObj(input)) {
+    const extractAttributes = (input: XMLObj): { [key: string]: string } => {
+      const attributes: { [key: string]: string } = {};
+      for (const key of Object.keys(input)) {
+        if (key.startsWith("@") && isStringValue(input[key])) {
+          attributes[key.substring(1)] = input[key];
+          delete input[key];
+        }
+      }
+      return attributes;
+    };
+
+    const attributes = extractAttributes(input);
+
+    return {
+      type: "node",
+      tagName: name,
+      ...(Object.keys(attributes).length > 0 ? { attributes } : {}),
+      children: createNodes(input),
+    };
+  }
+
   return ({
     type: "node",
     tagName: name,
@@ -40,7 +63,7 @@ const createXMLNodes = (input: XMLObj): XMLNode[] => {
 
   for (const [key, value] of Object.entries(input)) {
     // If the value is an array, create multiple nodes
-    if (Array.isArray(value)) {
+    if (isArrayOfStringValue(value)) {
       for (const v of value) {
         nodes.push(createXMLNode(key, v));
       }
