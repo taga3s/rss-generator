@@ -37,6 +37,8 @@ const stringifyAttributes = (attributes: { [key: string]: string }): string => {
   }).join("");
 };
 
-const stringify = (node: XMLNode): string => stringifyXMLNode(node);
+const stringify = (nodes: XMLNode[]): string => {
+  return nodes.map((node) => stringifyXMLNode(node)).join("");
+};
 
 export { stringify, stringifyValueNode, stringifyXMLNode, stringifyXMLNodes };

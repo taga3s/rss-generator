@@ -22,7 +22,7 @@ const xml = {
 };
 
 if (import.meta.main) {
-  const xmlTree = createXMLTree(xml)[0];
+  const xmlTree = createXMLTree(xml);
   const xmlString = stringify(xmlTree);
   console.log(xmlString);
 }
