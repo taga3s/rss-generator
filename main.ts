@@ -1,8 +1,10 @@
+import { stringify } from "./src/stringify.ts";
 import { createXMLTree } from "./src/tree.ts";
 
 const xml = {
   rss: {
     channel: {
+      "@version": "2.0",
       title: "Example",
       description: "This is an example website",
       link: "https://example.com",
@@ -20,6 +22,7 @@ const xml = {
 };
 
 if (import.meta.main) {
-  const output = createXMLTree(xml);
-  console.log(JSON.stringify(output, null, 2));
+  const xmlTree = createXMLTree(xml)[0];
+  const xmlString = stringify(xmlTree);
+  console.log(xmlString);
 }
