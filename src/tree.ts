@@ -36,7 +36,20 @@ const createXMLNode = (name: string, input: XMLObj | Value): XMLNode => {
       return attributes;
     };
 
+    const extractText = (input: XMLObj): string | undefined =>
+      isStringValue(input.$text) ? input.$text : undefined;
+
     const attributes = extractAttributes(input);
+    const value = extractText(input);
+
+    if (value) {
+      return {
+        type: "node",
+        tagName: name,
+        ...(Object.keys(attributes).length > 0 ? { attributes } : {}),
+        children: createValueNodes(value),
+      };
+    }
 
     return {
       type: "node",
