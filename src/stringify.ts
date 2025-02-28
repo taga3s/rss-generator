@@ -29,8 +29,16 @@ const stringifyNodes = (
 };
 
 const stringifyXMLNode = (node: XMLNode, indentLevel: number): string => {
+  const _stringifyAttributes = (
+    attributes: { [key: string]: string },
+  ): string => {
+    return Object.entries(attributes).map(([key, value]) => {
+      return ` ${key}="${value}"`;
+    }).join("");
+  };
+
   const attributes = node.attributes
-    ? stringifyAttributes(node.attributes)
+    ? _stringifyAttributes(node.attributes)
     : "";
 
   if (node.children.length === 0) {
@@ -55,12 +63,9 @@ const stringifyXMLNode = (node: XMLNode, indentLevel: number): string => {
   }
 };
 
-const stringifyAttributes = (attributes: { [key: string]: string }): string => {
-  return Object.entries(attributes).map(([key, value]) => {
-    return ` ${key}="${value}"`;
-  }).join("");
-};
-
+/**
+ * Converts an array of XMLNodes to a XML String. This is an entry point.
+ */
 const stringify = (nodes: XMLNode[]): string => {
   const indentLevel = 0;
   return nodes.map((node) => stringifyXMLNode(node, indentLevel)).join("\n");

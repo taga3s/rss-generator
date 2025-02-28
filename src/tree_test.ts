@@ -1,4 +1,10 @@
-import { createValueNode, createXMLNode, ValueNode, XMLNode } from "./tree.ts";
+import {
+  createValueNode,
+  createXMLNode,
+  createXMLNodes,
+  ValueNode,
+  XMLNode,
+} from "./tree.ts";
 import { assertEquals } from "@std/assert";
 
 Deno.test("it should return ValueNode when typeof value === 'string'", () => {
@@ -15,6 +21,25 @@ Deno.test("it should return XMLNode", () => {
   const expected: XMLNode = {
     type: "xml",
     tagName: "example",
+    children: [{
+      type: "value",
+      value: "example",
+    }],
+  };
+  assertEquals(node, expected);
+});
+
+Deno.test("it should return XMLNode with attributes", () => {
+  const node = createXMLNode("example", {
+    "@version": "2.0",
+    "$value": "example",
+  });
+  const expected: XMLNode = {
+    type: "xml",
+    tagName: "example",
+    attributes: {
+      "version": "2.0",
+    },
     children: [{
       type: "value",
       value: "example",
@@ -46,21 +71,56 @@ Deno.test("it should return self-closing XMLNode with attributes", () => {
   assertEquals(node, expected);
 });
 
-Deno.test("it should return XMLNode with attributes", () => {
-  const node = createXMLNode("example", {
-    "@version": "2.0",
-    "$text": "example",
+Deno.test("it should return XMLNode with children (different tags)", () => {
+  const nodes = createXMLNodes({
+    parent: { child1: "example", child2: "example" },
   });
-  const expected: XMLNode = {
+  const expected: XMLNode[] = [{
     type: "xml",
-    tagName: "example",
-    attributes: {
-      "version": "2.0",
-    },
+    tagName: "parent",
     children: [{
-      type: "value",
-      value: "example",
+      type: "xml",
+      tagName: "child1",
+      children: [{
+        type: "value",
+        value: "example",
+      }],
+    }, {
+      type: "xml",
+      tagName: "child2",
+      children: [{
+        type: "value",
+        value: "example",
+      }],
     }],
-  };
-  assertEquals(node, expected);
+  }];
+  assertEquals(nodes, expected);
+});
+
+Deno.test("it should return XMLNode with children (same tag)", () => {
+  const nodes = createXMLNodes({
+    parent: {
+      child: ["example1", "example2"],
+    },
+  });
+  const expected: XMLNode[] = [{
+    type: "xml",
+    tagName: "parent",
+    children: [{
+      type: "xml",
+      tagName: "child",
+      children: [{
+        type: "value",
+        value: "example1",
+      }],
+    }, {
+      type: "xml",
+      tagName: "child",
+      children: [{
+        type: "value",
+        value: "example2",
+      }],
+    }],
+  }];
+  assertEquals(nodes, expected);
 });

@@ -1,7 +1,7 @@
 import {
-  isArrayOfStringValue,
+  isArrayOfString,
   isArrayOfXMLObj,
-  isStringValue,
+  isString,
   isXMLObj,
   Value,
   XMLObj,
@@ -23,13 +23,13 @@ interface ValueNode extends Node {
   value: string;
 }
 
-const createXMLNode = (name: string, input: XMLObj | Value): XMLNode => {
-  if (isXMLObj(input)) {
-    // Extract attributes which start with "@" from the input object if they exist
+const createXMLNode = (name: string, children: XMLObj | string): XMLNode => {
+  if (isXMLObj(children)) {
+    // Extract attributes which start with "@" from the input object
     const _extractAttributes = (input: XMLObj): { [key: string]: string } => {
       const attributes: { [key: string]: string } = {};
       for (const key of Object.keys(input)) {
-        if (key.startsWith("@") && isStringValue(input[key])) {
+        if (key.startsWith("@") && isString(input[key])) {
           attributes[key.substring(1)] = input[key];
           delete input[key];
         }
@@ -37,39 +37,36 @@ const createXMLNode = (name: string, input: XMLObj | Value): XMLNode => {
       return attributes;
     };
 
-    // Extract "$text" from the input object if it exists
-    const _extractText = (input: XMLObj): string | undefined =>
-      isStringValue(input.$text) ? input.$text : undefined;
+    // Extract "$value" from the input object
+    const _extractValue = (input: XMLObj): string | undefined =>
+      isString(input.$value) ? input.$value : undefined;
 
-    const attributes = _extractAttributes(input);
-    const textValue = _extractText(input);
+    const attributes = _extractAttributes(children);
+    const value = _extractValue(children);
 
-    return {
-      type: "xml",
-      tagName: name,
-      ...(Object.keys(attributes).length > 0 ? { attributes } : {}),
-      children: textValue ? createValueNodes(textValue) : createNodes(input),
-    };
+    if (attributes || value) {
+      return {
+        type: "xml",
+        tagName: name,
+        ...(Object.keys(attributes).length > 0 ? { attributes } : {}),
+        children: value ? createValueNodes(value) : createXMLNodes(children),
+      };
+    }
   }
 
   return ({
     type: "xml",
     tagName: name,
-    children: createNodes(input),
+    children: createNodes(children),
   });
 };
 
-const createValueNode = (input: Value): ValueNode => ({
-  type: "value",
-  value: input,
-});
-
-const createXMLNodes = (input: XMLObj): XMLNode[] => {
+const createXMLNodes = (xmlObj: XMLObj): XMLNode[] => {
   const nodes: XMLNode[] = [];
 
-  for (const [key, value] of Object.entries(input)) {
+  for (const [key, value] of Object.entries(xmlObj)) {
     // If the value is an array, create multiple nodes
-    if (isArrayOfStringValue(value) || isArrayOfXMLObj(value)) {
+    if (isArrayOfXMLObj(value) || isArrayOfString(value)) {
       for (const v of value) {
         nodes.push(createXMLNode(key, v));
       }
@@ -82,19 +79,24 @@ const createXMLNodes = (input: XMLObj): XMLNode[] => {
   return nodes;
 };
 
+const createValueNode = (value: Value): ValueNode => ({
+  type: "value",
+  value,
+});
+
 const createValueNodes = (
-  input: Value,
-): ValueNode[] => [createValueNode(input)];
+  value: Value,
+): ValueNode[] => [createValueNode(value)];
 
-const createNodes = (input: XMLObj | Value): (XMLNode | ValueNode)[] => {
-  // If the input is a string, create a text node
-  if (isStringValue(input)) {
-    return createValueNodes(input);
-  }
-
+const createNodes = (input: XMLObj | string): (XMLNode | ValueNode)[] => {
   // If the input is an object, create multiple nodes
   if (isXMLObj(input)) {
     return createXMLNodes(input);
+  }
+
+  // If the input is a string, create a value node
+  if (isString(input)) {
+    return createValueNodes(input);
   }
 
   return [];
@@ -105,5 +107,11 @@ const createNodes = (input: XMLObj | Value): (XMLNode | ValueNode)[] => {
  */
 const createXMLTree = (input: XMLObj): XMLNode[] => createXMLNodes(input);
 
-export { createNodes, createValueNode, createXMLNode, createXMLTree };
+export {
+  createNodes,
+  createValueNode,
+  createXMLNode,
+  createXMLNodes,
+  createXMLTree,
+};
 export type { ValueNode, XMLNode };
