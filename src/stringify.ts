@@ -4,20 +4,31 @@ const stringifyValueNode = (node: ValueNode): string => {
   return `${node.value}`;
 };
 
-const stringifyXMLNodes = (children: (XMLNode | ValueNode)[]): string => {
-  return children.map((child) => {
-    switch (child.type) {
-      case "node":
-        return stringifyXMLNode(child);
-      case "value":
-        return stringifyValueNode(child);
-      default:
-        return "";
-    }
-  }).join("");
+const stringifyNodes = (
+  children: (XMLNode | ValueNode)[],
+  indentLevel: number,
+): {
+  childrenType: "tags" | "value";
+  value: string;
+} => {
+  if (children[0].type === "value") {
+    return {
+      childrenType: "value",
+      value: stringifyValueNode(children[0]),
+    };
+  }
+
+  const stringifiedXMLNodes: string[] = children.filter((child) =>
+    child.type === "node"
+  ).map((child) => stringifyXMLNode(child, indentLevel));
+
+  return {
+    childrenType: "tags",
+    value: `${stringifiedXMLNodes.join("\n")}`,
+  };
 };
 
-const stringifyXMLNode = (node: XMLNode): string => {
+const stringifyXMLNode = (node: XMLNode, indentLevel: number): string => {
   const attributes = node.attributes
     ? stringifyAttributes(node.attributes)
     : "";
@@ -26,9 +37,22 @@ const stringifyXMLNode = (node: XMLNode): string => {
     return `<${node.tagName}${attributes}/>`;
   }
 
-  return `<${node.tagName}${attributes}>${
-    stringifyXMLNodes(node.children)
-  }</${node.tagName}>`;
+  const { childrenType, value } = stringifyNodes(
+    node.children,
+    indentLevel + 1,
+  );
+
+  const indent = "  ".repeat(indentLevel);
+
+  switch (childrenType) {
+    case "tags": {
+      return `${indent}<${node.tagName}${attributes}>\n${value}\n${indent}</${node.tagName}>`;
+    }
+    case "value":
+      return `${indent}<${node.tagName}${attributes}>${value}</${node.tagName}>`;
+    default:
+      throw new Error("Invalid type");
+  }
 };
 
 const stringifyAttributes = (attributes: { [key: string]: string }): string => {
@@ -38,7 +62,8 @@ const stringifyAttributes = (attributes: { [key: string]: string }): string => {
 };
 
 const stringify = (nodes: XMLNode[]): string => {
-  return nodes.map((node) => stringifyXMLNode(node)).join("");
+  const indentLevel = 0;
+  return nodes.map((node) => stringifyXMLNode(node, indentLevel)).join("\n");
 };
 
-export { stringify, stringifyValueNode, stringifyXMLNode, stringifyXMLNodes };
+export { stringify, stringifyNodes, stringifyValueNode, stringifyXMLNode };

@@ -36,8 +36,10 @@ Deno.test("stringify XMLNode with children", () => {
       },
     ],
   };
-  const expected = "<parent><child>example</child></parent>";
-  assertEquals(stringifyXMLNode(node), expected);
+  const indentLevel = 0;
+  const indent = "  ".repeat(indentLevel + 1);
+  const expected = `<parent>\n${indent}<child>example</child>\n</parent>`;
+  assertEquals(stringifyXMLNode(node, indentLevel), expected);
 });
 
 Deno.test("stringify XMLNode without children", () => {
@@ -47,7 +49,7 @@ Deno.test("stringify XMLNode without children", () => {
     children: [],
   };
   const expected = "<self-closing/>";
-  assertEquals(stringifyXMLNode(node), expected);
+  assertEquals(stringifyXMLNode(node, 0), expected);
 });
 
 Deno.test("stringify XMLNode with attributes", () => {
@@ -63,5 +65,5 @@ Deno.test("stringify XMLNode with attributes", () => {
     }],
   };
   const expected = '<example version="2.0">example</example>';
-  assertEquals(stringifyXMLNode(node), expected);
+  assertEquals(stringifyXMLNode(node, 0), expected);
 });

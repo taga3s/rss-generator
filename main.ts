@@ -2,6 +2,10 @@ import { stringify } from "./src/stringify.ts";
 import { createXMLTree } from "./src/tree.ts";
 
 const xml = {
+  xml: {
+    "@version": "2.0",
+    "@encoding": "UTF-8",
+  },
   rss: {
     channel: {
       "@version": "2.0",
