@@ -23,11 +23,11 @@ Deno.test("stringify ValueNode with value number", () => {
 
 Deno.test("stringify XMLNode with children", () => {
   const node: XMLNode = {
-    type: "node",
+    type: "xml",
     tagName: "parent",
     children: [
       {
-        type: "node",
+        type: "xml",
         tagName: "child",
         children: [{
           type: "value",
@@ -44,7 +44,7 @@ Deno.test("stringify XMLNode with children", () => {
 
 Deno.test("stringify XMLNode without children", () => {
   const node: XMLNode = {
-    type: "node",
+    type: "xml",
     tagName: "self-closing",
     children: [],
   };
@@ -54,7 +54,7 @@ Deno.test("stringify XMLNode without children", () => {
 
 Deno.test("stringify XMLNode with attributes", () => {
   const node: XMLNode = {
-    type: "node",
+    type: "xml",
     tagName: "example",
     attributes: {
       version: "2.0",

@@ -12,7 +12,7 @@ interface Node {
 }
 
 interface XMLNode extends Node {
-  type: "node";
+  type: "xml";
   tagName: string;
   children: (XMLNode | ValueNode)[];
   attributes?: { [key: string]: string };
@@ -44,7 +44,7 @@ const createXMLNode = (name: string, input: XMLObj | Value): XMLNode => {
 
     if (value) {
       return {
-        type: "node",
+        type: "xml",
         tagName: name,
         ...(Object.keys(attributes).length > 0 ? { attributes } : {}),
         children: createValueNodes(value),
@@ -52,7 +52,7 @@ const createXMLNode = (name: string, input: XMLObj | Value): XMLNode => {
     }
 
     return {
-      type: "node",
+      type: "xml",
       tagName: name,
       ...(Object.keys(attributes).length > 0 ? { attributes } : {}),
       children: createNodes(input),
@@ -60,7 +60,7 @@ const createXMLNode = (name: string, input: XMLObj | Value): XMLNode => {
   }
 
   return ({
-    type: "node",
+    type: "xml",
     tagName: name,
     children: createNodes(input),
   });

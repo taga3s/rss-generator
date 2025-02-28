@@ -22,7 +22,7 @@ Deno.test("it should return ValueNode when typeof value === 'number'", () => {
 Deno.test("it should return XMLNode", () => {
   const node = createXMLNode("example", "example");
   const expected: XMLNode = {
-    type: "node",
+    type: "xml",
     tagName: "example",
     children: [{
       type: "value",
@@ -35,7 +35,7 @@ Deno.test("it should return XMLNode", () => {
 Deno.test("it should return self-closing XMLNode", () => {
   const node = createXMLNode("self-closing", {});
   const expected: XMLNode = {
-    type: "node",
+    type: "xml",
     tagName: "self-closing",
     children: [],
   };
@@ -45,7 +45,7 @@ Deno.test("it should return self-closing XMLNode", () => {
 Deno.test("it should return self-closing XMLNode with attributes", () => {
   const node = createXMLNode("self-closing", { "@version": "2.0" });
   const expected: XMLNode = {
-    type: "node",
+    type: "xml",
     tagName: "self-closing",
     attributes: {
       "version": "2.0",
@@ -61,7 +61,7 @@ Deno.test("it should return XMLNode with attributes", () => {
     "$text": "example",
   });
   const expected: XMLNode = {
-    type: "node",
+    type: "xml",
     tagName: "example",
     attributes: {
       "version": "2.0",

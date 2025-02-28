@@ -19,7 +19,7 @@ const stringifyNodes = (
   }
 
   const stringifiedXMLNodes: string[] = children.filter((child) =>
-    child.type === "node"
+    child.type === "xml"
   ).map((child) => stringifyXMLNode(child, indentLevel));
 
   return {
