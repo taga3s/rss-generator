@@ -10,15 +10,6 @@ Deno.test("it should return ValueNode when typeof value === 'string'", () => {
   assertEquals(node, expected);
 });
 
-Deno.test("it should return ValueNode when typeof value === 'number'", () => {
-  const node = createValueNode(1);
-  const expected: ValueNode = {
-    type: "value",
-    value: 1,
-  };
-  assertEquals(node, expected);
-});
-
 Deno.test("it should return XMLNode", () => {
   const node = createXMLNode("example", "example");
   const expected: XMLNode = {

@@ -1,6 +1,6 @@
 import {
   isArrayOfStringValue,
-  isNumberValue,
+  isArrayOfXMLObj,
   isStringValue,
   isXMLObj,
   Value,
@@ -20,12 +20,13 @@ interface XMLNode extends Node {
 
 interface ValueNode extends Node {
   type: "value";
-  value: string | number;
+  value: string;
 }
 
 const createXMLNode = (name: string, input: XMLObj | Value): XMLNode => {
   if (isXMLObj(input)) {
-    const extractAttributes = (input: XMLObj): { [key: string]: string } => {
+    // Extract attributes which start with "@" from the input object if they exist
+    const _extractAttributes = (input: XMLObj): { [key: string]: string } => {
       const attributes: { [key: string]: string } = {};
       for (const key of Object.keys(input)) {
         if (key.startsWith("@") && isStringValue(input[key])) {
@@ -36,26 +37,18 @@ const createXMLNode = (name: string, input: XMLObj | Value): XMLNode => {
       return attributes;
     };
 
-    const extractText = (input: XMLObj): string | undefined =>
+    // Extract "$text" from the input object if it exists
+    const _extractText = (input: XMLObj): string | undefined =>
       isStringValue(input.$text) ? input.$text : undefined;
 
-    const attributes = extractAttributes(input);
-    const value = extractText(input);
-
-    if (value) {
-      return {
-        type: "xml",
-        tagName: name,
-        ...(Object.keys(attributes).length > 0 ? { attributes } : {}),
-        children: createValueNodes(value),
-      };
-    }
+    const attributes = _extractAttributes(input);
+    const textValue = _extractText(input);
 
     return {
       type: "xml",
       tagName: name,
       ...(Object.keys(attributes).length > 0 ? { attributes } : {}),
-      children: createNodes(input),
+      children: textValue ? createValueNodes(textValue) : createNodes(input),
     };
   }
 
@@ -76,7 +69,7 @@ const createXMLNodes = (input: XMLObj): XMLNode[] => {
 
   for (const [key, value] of Object.entries(input)) {
     // If the value is an array, create multiple nodes
-    if (isArrayOfStringValue(value)) {
+    if (isArrayOfStringValue(value) || isArrayOfXMLObj(value)) {
       for (const v of value) {
         nodes.push(createXMLNode(key, v));
       }
@@ -95,7 +88,7 @@ const createValueNodes = (
 
 const createNodes = (input: XMLObj | Value): (XMLNode | ValueNode)[] => {
   // If the input is a string, create a text node
-  if (isStringValue(input) || isNumberValue(input)) {
+  if (isStringValue(input)) {
     return createValueNodes(input);
   }
 

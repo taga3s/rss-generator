@@ -12,15 +12,6 @@ Deno.test("stringify ValueNode with value string", () => {
   assertEquals(stringifyValueNode(node), expected);
 });
 
-Deno.test("stringify ValueNode with value number", () => {
-  const node: ValueNode = {
-    type: "value",
-    value: 42,
-  };
-  const expected = "42";
-  assertEquals(stringifyValueNode(node), expected);
-});
-
 Deno.test("stringify XMLNode with children", () => {
   const node: XMLNode = {
     type: "xml",
