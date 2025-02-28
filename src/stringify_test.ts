@@ -43,17 +43,17 @@ Deno.test("stringify XMLNode with children", () => {
 Deno.test("stringify XMLNode without children", () => {
   const node: XMLNode = {
     type: "node",
-    tagName: "parent",
+    tagName: "self-closing",
     children: [],
   };
-  const expected = "<parent/>";
+  const expected = "<self-closing/>";
   assertEquals(stringifyXMLNode(node), expected);
 });
 
 Deno.test("stringify XMLNode with attributes", () => {
   const node: XMLNode = {
     type: "node",
-    tagName: "parent",
+    tagName: "example",
     attributes: {
       version: "2.0",
     },
@@ -62,6 +62,6 @@ Deno.test("stringify XMLNode with attributes", () => {
       value: "example",
     }],
   };
-  const expected = '<parent version="2.0">example</parent>';
+  const expected = '<example version="2.0">example</example>';
   assertEquals(stringifyXMLNode(node), expected);
 });
