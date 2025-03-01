@@ -1,9 +1,9 @@
 import {
   createValueNode,
-  createXMLNode,
-  createXMLNodes,
+  createXMLTagNode,
+  createXMLTagNodes,
   ValueNode,
-  XMLNode,
+  XMLTagNode,
 } from "./tree.ts";
 import { assertEquals } from "@std/assert";
 
@@ -16,10 +16,10 @@ Deno.test("it should return ValueNode when typeof value === 'string'", () => {
   assertEquals(node, expected);
 });
 
-Deno.test("it should return XMLNode", () => {
-  const node = createXMLNode("example", "example");
-  const expected: XMLNode = {
-    type: "xml",
+Deno.test("it should return XMLTagNode", () => {
+  const node = createXMLTagNode("example", "example");
+  const expected: XMLTagNode = {
+    type: "tag",
     tagName: "example",
     children: [{
       type: "value",
@@ -29,13 +29,13 @@ Deno.test("it should return XMLNode", () => {
   assertEquals(node, expected);
 });
 
-Deno.test("it should return XMLNode with attributes", () => {
-  const node = createXMLNode("example", {
+Deno.test("it should return XMLTagNode with attributes", () => {
+  const node = createXMLTagNode("example", {
     "@version": "2.0",
     "$value": "example",
   });
-  const expected: XMLNode = {
-    type: "xml",
+  const expected: XMLTagNode = {
+    type: "tag",
     tagName: "example",
     attributes: {
       "version": "2.0",
@@ -48,20 +48,20 @@ Deno.test("it should return XMLNode with attributes", () => {
   assertEquals(node, expected);
 });
 
-Deno.test("it should return self-closing XMLNode", () => {
-  const node = createXMLNode("self-closing", {});
-  const expected: XMLNode = {
-    type: "xml",
+Deno.test("it should return self-closing XMLTagNode", () => {
+  const node = createXMLTagNode("self-closing", {});
+  const expected: XMLTagNode = {
+    type: "tag",
     tagName: "self-closing",
     children: [],
   };
   assertEquals(node, expected);
 });
 
-Deno.test("it should return self-closing XMLNode with attributes", () => {
-  const node = createXMLNode("self-closing", { "@version": "2.0" });
-  const expected: XMLNode = {
-    type: "xml",
+Deno.test("it should return self-closing XMLTagNode with attributes", () => {
+  const node = createXMLTagNode("self-closing", { "@version": "2.0" });
+  const expected: XMLTagNode = {
+    type: "tag",
     tagName: "self-closing",
     attributes: {
       "version": "2.0",
@@ -71,22 +71,22 @@ Deno.test("it should return self-closing XMLNode with attributes", () => {
   assertEquals(node, expected);
 });
 
-Deno.test("it should return XMLNode with children (different tags)", () => {
-  const nodes = createXMLNodes({
+Deno.test("it should return XMLTagNode with children (different tags)", () => {
+  const nodes = createXMLTagNodes({
     parent: { child1: "example", child2: "example" },
   });
-  const expected: XMLNode[] = [{
-    type: "xml",
+  const expected: XMLTagNode[] = [{
+    type: "tag",
     tagName: "parent",
     children: [{
-      type: "xml",
+      type: "tag",
       tagName: "child1",
       children: [{
         type: "value",
         value: "example",
       }],
     }, {
-      type: "xml",
+      type: "tag",
       tagName: "child2",
       children: [{
         type: "value",
@@ -97,24 +97,24 @@ Deno.test("it should return XMLNode with children (different tags)", () => {
   assertEquals(nodes, expected);
 });
 
-Deno.test("it should return XMLNode with children (same tag)", () => {
-  const nodes = createXMLNodes({
+Deno.test("it should return XMLTagNode with children (same tag)", () => {
+  const nodes = createXMLTagNodes({
     parent: {
       child: ["example1", "example2"],
     },
   });
-  const expected: XMLNode[] = [{
-    type: "xml",
+  const expected: XMLTagNode[] = [{
+    type: "tag",
     tagName: "parent",
     children: [{
-      type: "xml",
+      type: "tag",
       tagName: "child",
       children: [{
         type: "value",
         value: "example1",
       }],
     }, {
-      type: "xml",
+      type: "tag",
       tagName: "child",
       children: [{
         type: "value",

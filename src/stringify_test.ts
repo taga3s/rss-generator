@@ -1,6 +1,6 @@
 import { assertEquals } from "@std/assert/equals";
 import { stringifyValueNode } from "./stringify.ts";
-import { ValueNode, XMLNode } from "./tree.ts";
+import { ValueNode, XMLTagNode } from "./tree.ts";
 import { stringifyXMLNode } from "./stringify.ts";
 
 Deno.test("stringify ValueNode with value string", () => {
@@ -13,12 +13,12 @@ Deno.test("stringify ValueNode with value string", () => {
 });
 
 Deno.test("stringify XMLNode with children", () => {
-  const node: XMLNode = {
-    type: "xml",
+  const node: XMLTagNode = {
+    type: "tag",
     tagName: "parent",
     children: [
       {
-        type: "xml",
+        type: "tag",
         tagName: "child",
         children: [{
           type: "value",
@@ -34,8 +34,8 @@ Deno.test("stringify XMLNode with children", () => {
 });
 
 Deno.test("stringify XMLNode without children", () => {
-  const node: XMLNode = {
-    type: "xml",
+  const node: XMLTagNode = {
+    type: "tag",
     tagName: "self-closing",
     children: [],
   };
@@ -44,8 +44,8 @@ Deno.test("stringify XMLNode without children", () => {
 });
 
 Deno.test("stringify XMLNode with attributes", () => {
-  const node: XMLNode = {
-    type: "xml",
+  const node: XMLTagNode = {
+    type: "tag",
     tagName: "example",
     attributes: {
       version: "2.0",
