@@ -5,7 +5,6 @@ import {
   Guid,
   Image,
   Item,
-  RSS,
   Source,
   TextInput,
 } from "./generate_rss_types.ts";
@@ -19,19 +18,6 @@ import {
   XMLSourceTag,
   XMLTextInputTag,
 } from "./xmlobj_types.ts";
-
-const rssProps = (rss: RSS): {
-  [key: string]: string;
-} | undefined => {
-  if (!rss) {
-    return undefined;
-  }
-  const props: { [key: string]: string } = {};
-  for (const [key, value] of Object.entries(rss)) {
-    props[`@${key}`] = value;
-  }
-  return props;
-};
 
 const optionalProp = <TValue, TTransformed = TValue>(
   key: string,
@@ -48,15 +34,14 @@ const optionalProp = <TValue, TTransformed = TValue>(
 };
 
 const buildXMLObj = (input: {
-  rss: RSS;
   channel: Channel;
   items?: Item[];
 }): XMLObj => {
-  const { rss, channel, items } = input;
+  const { channel, items } = input;
 
   const xmlObj = {
     rss: {
-      ...rssProps(rss),
+      "@version": "2.0",
       channel: {
         title: channel.title,
         description: channel.description,

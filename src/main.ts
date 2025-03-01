@@ -1,11 +1,4 @@
-import { cdata, Channel, generateRSS, Item, RSS } from "./mod.ts";
-
-const rss: RSS = {
-  version: "2.0",
-  "xmlns:content": "http://purl.org/rss/1.0/modules/content/",
-  "xmlns:dc": "http://purl.org/dc/elements/1.1/",
-  "xmlns:media": "http://search.yahoo.com/mrss/",
-};
+import { cdata, Channel, generateRSS, Item } from "./mod.ts";
 
 const channel: Channel = {
   title: "Example Web",
@@ -41,7 +34,7 @@ const items: Item[] = [
 ];
 
 if (import.meta.main) {
-  const xml = generateRSS({ rss, channel, items });
+  const xml = generateRSS({ channel, items });
   const data = new TextEncoder().encode(xml);
   await Deno.writeFile("rss.xml", data);
 }

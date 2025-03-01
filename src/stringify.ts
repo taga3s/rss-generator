@@ -69,7 +69,9 @@ const stringifyXMLNode = (node: XMLNode, indentLevel: number): string => {
 const stringify = (nodes: XMLNode[]): string => {
   const indentLevel = 0;
   const xmlTag = `<?xml version="1.0" encoding="UTF-8"?>`;
-  return `${xmlTag}\n${nodes.map((node) => stringifyXMLNode(node, indentLevel)).join("\n")}`
+  return `${xmlTag}\n${
+    nodes.map((node) => stringifyXMLNode(node, indentLevel)).join("\n")
+  }`;
 };
 
 export { stringify, stringifyNodes, stringifyValueNode, stringifyXMLNode };
