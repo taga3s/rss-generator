@@ -5,6 +5,7 @@ import {
   Guid,
   Image,
   Item,
+  RSS,
   Source,
   TextInput,
 } from "./generate_rss_types.ts";
@@ -18,6 +19,19 @@ import {
   XMLSourceTag,
   XMLTextInputTag,
 } from "./xmlobj_types.ts";
+
+const rssProps = (rss: RSS): {
+  [key: string]: string;
+} | undefined => {
+  if (!rss) {
+    return undefined;
+  }
+  const props: { [key: string]: string } = {};
+  for (const [key, value] of Object.entries(rss)) {
+    props[`@${key}`] = value;
+  }
+  return props;
+};
 
 const optionalProp = <TValue, TTransformed = TValue>(
   key: string,
@@ -34,21 +48,15 @@ const optionalProp = <TValue, TTransformed = TValue>(
 };
 
 const buildXMLObj = (input: {
+  rss: RSS;
   channel: Channel;
   items?: Item[];
 }): XMLObj => {
-  const { channel, items } = input;
+  const { rss, channel, items } = input;
 
   const xmlObj = {
-    xml: {
-      "@version": "2.0",
-      "@encoding": "UTF-8",
-    },
     rss: {
-      //TODO: Add more namespaces
-      "@xmlns:dc": "http://purl.org/dc/elements/1.1/",
-      "@xmlns:content": "http://purl.org/rss/1.0/modules/content/",
-      "@version": "2.0",
+      ...rssProps(rss),
       channel: {
         title: channel.title,
         description: channel.description,

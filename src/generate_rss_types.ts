@@ -1,3 +1,8 @@
+type RSS = {
+  version: "2.0";
+  [namespace: string]: string;
+};
+
 type Channel = {
   title: string;
 
@@ -140,6 +145,7 @@ export type {
   Guid,
   Image,
   Item,
+  RSS,
   SkipDays,
   Source,
   TextInput,

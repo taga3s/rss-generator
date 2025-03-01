@@ -1,5 +1,9 @@
-import { Item } from "./src/generate_rss_types.ts";
+import { Item, RSS } from "./src/generate_rss_types.ts";
 import { Channel, generateRSS } from "./src/mod.ts";
+
+const rss: RSS = {
+  version: "2.0",
+};
 
 const channel: Channel = {
   title: "example",
@@ -35,6 +39,6 @@ const items: Item[] = [{
 }];
 
 if (import.meta.main) {
-  const xml = generateRSS({ channel, items });
+  const xml = generateRSS({ rss, channel, items });
   console.log(xml);
 }
