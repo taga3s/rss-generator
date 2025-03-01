@@ -1,4 +1,5 @@
 export { generateRSS } from "./generate_rss.ts";
+export { cdata } from "./cdata.ts";
 export type {
   Channel,
   Cloud,
@@ -6,6 +7,7 @@ export type {
   Guid,
   Image,
   Item,
+  RSS,
   SkipDays,
   Source,
   TextInput,
