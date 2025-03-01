@@ -1,8 +1,9 @@
 # rss-generator
 
-## features
+A simple RSS 2.0 XML generator. This project is just for fun and learning
+purposes.
 
-This project is just for fun and learning purposes.
+## features
 
 - generate RSS 2.0 XML (following
   [RSS 2.0 Specification](https://www.rssboard.org/rss-specification))
@@ -11,7 +12,7 @@ This project is just for fun and learning purposes.
 ## example usage
 
 ```ts
-import { cdata, Channel, generateRSS, Item, RSS } from "./mod.ts";
+import { cdata, Channel, generateRSS, Item, RSS } from "@taga3s/rss-generator";
 
 const rss: RSS = {
   version: "2.0",
@@ -61,11 +62,11 @@ if (import.meta.main) {
 ```
 
 - You can validate the generated RSS XML by using
-  [W3C Feed Validation Service](https://validator.w3.org/feed/)
+  [W3C Feed Validation Service](https://validator.w3.org/feed/).
 
 ## license
 
-- MIT
+- [MIT](https://github.com/taga3s/rss-generator/blob/main/LICENSE)
 
 ## author
 
