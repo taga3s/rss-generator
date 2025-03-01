@@ -5,7 +5,7 @@ import {
   isXMLObj,
   Value,
   XMLObj,
-} from "./input_data.ts";
+} from "./tree_types.ts";
 
 interface Node {
   type: string;
