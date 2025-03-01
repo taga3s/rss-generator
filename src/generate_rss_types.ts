@@ -64,14 +64,8 @@ type Image = {
 
   link: string;
 
-  /**
-   * Maximum 144, default 88
-   */
   width?: number;
 
-  /**
-   * Maximum 400, default 31
-   */
   height?: number;
 
   description?: string;

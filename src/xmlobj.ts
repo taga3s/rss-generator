@@ -87,13 +87,19 @@ const buildXMLObj = (input: {
         ...optionalProp<string>("pubDate", channel.pubDate),
         ...optionalProp<string>("rating", channel.rating),
         ...optionalProp<string[]>("skipDays", channel.skipDays),
-        ...optionalProp<number>("skipHours", channel.skipHours),
+        ...optionalProp<string>(
+          "skipHours",
+          channel.skipHours ? channel.skipHours.toString() : undefined,
+        ),
         ...optionalProp<TextInput, XMLTextInputTag>(
           "textInput",
           channel.textInput,
           toXMLTextInputTag,
         ),
-        ...optionalProp<number>("ttl", channel.ttl),
+        ...optionalProp<string>(
+          "ttl",
+          channel.ttl ? channel.ttl.toString() : undefined,
+        ),
         ...optionalProp<string>("webMaster", channel.webMaster),
         ...optionalProp<Item[], XMLItemTag[]>(
           "item",
