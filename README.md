@@ -5,9 +5,10 @@ purposes.
 
 ## features
 
-- generate RSS 2.0 XML (following
-  [RSS 2.0 Specification](https://www.rssboard.org/rss-specification))
-- zero dependencies
+- [x] generate RSS 2.0 XML (following
+      [RSS 2.0 Specification](https://www.rssboard.org/rss-specification))
+- [x] zero dependencies
+- [ ] namespace support
 
 ## example usage
 
