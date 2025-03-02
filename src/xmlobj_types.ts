@@ -50,3 +50,9 @@ export type XMLSourceTag = {
   $value: string;
   "@url": string;
 };
+
+export type XMLAtomLinkTag = {
+  "@href": string;
+  "@rel": string;
+  "@type": string;
+};

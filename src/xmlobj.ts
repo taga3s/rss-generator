@@ -1,4 +1,5 @@
 import {
+  Atom,
   Channel,
   Cloud,
   Enclosure,
@@ -10,6 +11,7 @@ import {
 } from "./generate_rss_types.ts";
 import { XMLObj } from "./tree_types.ts";
 import {
+  XMLAtomLinkTag,
   XMLCloudTag,
   XMLEnclosureTag,
   XMLGuidTag,
@@ -36,8 +38,9 @@ const optionalProp = <TValue, TTransformed = TValue>(
 const buildXMLObj = (input: {
   channel: Channel;
   items?: Item[];
+  atom?: Atom;
 }): XMLObj => {
-  const { channel, items } = input;
+  const { channel, items, atom } = input;
 
   const xmlObj = {
     xml: {
@@ -46,10 +49,16 @@ const buildXMLObj = (input: {
     },
     rss: {
       "@version": "2.0",
+      "@xmlns:atom": "http://www.w3.org/2005/Atom",
       channel: {
         title: channel.title,
         description: channel.description,
         link: channel.link,
+        ...optionalProp<Atom["link"], XMLAtomLinkTag>(
+          "atom:link",
+          atom?.link,
+          toXMLAtomLinkTag,
+        ),
         ...optionalProp("category", channel.category),
         ...optionalProp<Cloud, XMLCloudTag>(
           "cloud",
@@ -99,6 +108,7 @@ const buildXMLObj = (input: {
     },
   };
 
+  console.log(xmlObj);
   return xmlObj;
 };
 
@@ -168,9 +178,16 @@ const toXMLSourceTag = (data: Source): XMLSourceTag => ({
   "@url": data.url,
 });
 
+const toXMLAtomLinkTag = (data: Atom["link"]): XMLAtomLinkTag => ({
+  "@href": data.href,
+  "@rel": data.rel,
+  "@type": data.type,
+});
+
 export {
   buildXMLObj,
   optionalProp,
+  toXMLAtomLinkTag,
   toXMLCloudTag,
   toXMLEnclosureTag,
   toXMLGuidTag,

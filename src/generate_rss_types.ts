@@ -129,7 +129,18 @@ type Source = {
   url: string;
 };
 
+type Atom = {
+  link: {
+    href: string;
+
+    rel: string;
+
+    type: string;
+  };
+};
+
 export type {
+  Atom,
   Channel,
   Cloud,
   Enclosure,

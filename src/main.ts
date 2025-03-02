@@ -1,3 +1,4 @@
+import { Atom } from "./generate_rss_types.ts";
 import { cdata, Channel, generateRSS, Item } from "./mod.ts";
 
 const channel: Channel = {
@@ -33,8 +34,16 @@ const items: Item[] = [
   },
 ];
 
+const atom: Atom = {
+  link: {
+    href: "https://example.com/feed",
+    rel: "self",
+    type: "application/rss+xml",
+  },
+};
+
 if (import.meta.main) {
-  const xml = generateRSS({ channel, items });
+  const xml = generateRSS({ channel, items, atom });
   const data = new TextEncoder().encode(xml);
   await Deno.writeFile("rss.xml", data);
 }
