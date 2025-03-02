@@ -1,4 +1,8 @@
 {
+  "name": "@taga3s/rss-generator",
+  "version": "0.1.0",
+  "license": "MIT",
+  "exports": "./mod.ts",
   "tasks": {
     "dev": "deno run --allow-write src/main.ts",
     "dev:watch": "deno run --watch src/main.ts"
