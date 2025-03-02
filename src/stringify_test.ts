@@ -1,7 +1,6 @@
 import { assertEquals } from "@std/assert/equals";
-import { stringifyValueNode } from "./stringify.ts";
-import { ValueNode, XMLDeclarationNode, XMLTagNode } from "./tree.ts";
-import { stringifyXMLNode } from "./stringify.ts";
+import type { ValueNode, XMLDeclarationNode, XMLTagNode } from "./tree.ts";
+import { stringifyValueNode, stringifyXMLNode } from "./stringify.ts";
 
 Deno.test("stringify XMLNode which is DeclarationNode", () => {
   const node: XMLDeclarationNode = {

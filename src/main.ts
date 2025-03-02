@@ -1,5 +1,10 @@
-import { Atom } from "./generate_rss_types.ts";
-import { cdata, Channel, generateRSS, Item } from "./mod.ts";
+import {
+  type Atom,
+  cdata,
+  type Channel,
+  generateRSS,
+  type Item,
+} from "./mod.ts";
 
 const channel: Channel = {
   title: "Example Web",

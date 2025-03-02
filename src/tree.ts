@@ -3,8 +3,8 @@ import {
   isArrayOfXMLObj,
   isString,
   isXMLObj,
-  Value,
-  XMLObj,
+  type Value,
+  type XMLObj,
 } from "./tree_types.ts";
 
 interface Node {

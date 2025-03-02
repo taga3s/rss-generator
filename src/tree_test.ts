@@ -3,9 +3,9 @@ import {
   createXMLDeclarationNode,
   createXMLTagNode,
   createXMLTagNodes,
-  ValueNode,
-  XMLDeclarationNode,
-  XMLTagNode,
+  type ValueNode,
+  type XMLDeclarationNode,
+  type XMLTagNode,
 } from "./tree.ts";
 import { assertEquals } from "@std/assert";
 

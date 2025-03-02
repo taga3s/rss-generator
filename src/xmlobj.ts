@@ -1,4 +1,4 @@
-import {
+import type {
   Atom,
   Channel,
   Cloud,
@@ -9,8 +9,8 @@ import {
   Source,
   TextInput,
 } from "./generate_rss_types.ts";
-import { XMLObj } from "./tree_types.ts";
-import {
+import type { XMLObj } from "./tree_types.ts";
+import type {
   ChannelAtomLink,
   ChannelCloud,
   ChannelImage,

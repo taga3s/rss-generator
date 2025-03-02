@@ -1,4 +1,4 @@
-type Channel = {
+export type Channel = {
   title: string;
 
   link: string;
@@ -38,7 +38,7 @@ type Channel = {
   skipHours?: number;
 };
 
-type Cloud = {
+export type Cloud = {
   domain: string;
 
   port: number;
@@ -50,9 +50,9 @@ type Cloud = {
   protocol: Protocol;
 };
 
-type Protocol = "xml-rpc" | "soap" | "http-post";
+export type Protocol = "xml-rpc" | "soap" | "http-post";
 
-type Image = {
+export type Image = {
   url: string;
 
   title: string;
@@ -68,7 +68,7 @@ type Image = {
   description?: string;
 };
 
-type TextInput = {
+export type TextInput = {
   title: string;
 
   description: string;
@@ -78,7 +78,7 @@ type TextInput = {
   link: string;
 };
 
-type SkipDays =
+export type SkipDays =
   | "Monday"
   | "Tuesday"
   | "Wednesday"
@@ -87,7 +87,7 @@ type SkipDays =
   | "Saturday"
   | "Sunday";
 
-type Item = {
+export type Item = {
   title?: string;
 
   link?: string;
@@ -109,7 +109,7 @@ type Item = {
   source?: Source;
 };
 
-type Enclosure = {
+export type Enclosure = {
   url: string;
 
   length: number;
@@ -117,19 +117,19 @@ type Enclosure = {
   type: string;
 };
 
-type Guid = {
+export type Guid = {
   value: string;
 
   isPermaLink: boolean;
 };
 
-type Source = {
+export type Source = {
   value: string;
 
   url: string;
 };
 
-type Atom = {
+export type Atom = {
   link: {
     href: string;
 
@@ -137,17 +137,4 @@ type Atom = {
 
     type: string;
   };
-};
-
-export type {
-  Atom,
-  Channel,
-  Cloud,
-  Enclosure,
-  Guid,
-  Image,
-  Item,
-  SkipDays,
-  Source,
-  TextInput,
 };
