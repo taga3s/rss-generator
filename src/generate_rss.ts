@@ -3,6 +3,11 @@ import { createXMLTree } from "./tree.ts";
 import type { Atom, Channel, Item } from "./generate_rss_types.ts";
 import { buildXMLObj } from "./xmlobj.ts";
 
+/**
+ * Generate RSS feed
+ * @param data - RSS feed data
+ * @returns RSS feed as string
+ */
 const generateRSS = (
   data: { channel: Channel; items?: Item[]; atom?: Atom },
 ): string => {

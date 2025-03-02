@@ -1,6 +1,5 @@
-import { assertEquals } from "@std/assert/equals";
+import { assertEquals, assertThrows } from "@std/assert";
 import { cdata } from "./cdata.ts";
-import { assertThrows } from "@std/assert/throws";
 
 Deno.test("cdata", () => {
   assertEquals(cdata("data"), "<![CDATA[data]]>");
