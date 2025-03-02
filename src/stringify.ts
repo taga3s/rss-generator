@@ -48,16 +48,16 @@ const stringifyXMLNode = (
     return `<?xml${_stringifyAttributes(node.attributes)}?>`;
   }
 
+  const indent = "  ".repeat(indentLevel);
+
   if (node.children.length === 0) {
-    return `<${node.tagName}${attributes}/>`;
+    return `${indent}<${node.tagName}${attributes}/>`;
   }
 
   const { childrenType, value } = stringifyNodes(
     node.children,
     indentLevel + 1,
   );
-
-  const indent = "  ".repeat(indentLevel);
 
   switch (childrenType) {
     case "tags": {
