@@ -11,14 +11,14 @@ import {
 } from "./generate_rss_types.ts";
 import { XMLObj } from "./tree_types.ts";
 import {
-  XMLAtomLinkTag,
-  XMLCloudTag,
-  XMLEnclosureTag,
-  XMLGuidTag,
-  XMLImageTag,
-  XMLItemTag,
-  XMLSourceTag,
-  XMLTextInputTag,
+  ChannelAtomLink,
+  ChannelCloud,
+  ChannelImage,
+  ChannelItem,
+  ChannelTextInput,
+  ItemEnclosure,
+  ItemGuid,
+  ItemSource,
 } from "./xmlobj_types.ts";
 
 const optionalProp = <TValue, TTransformed = TValue>(
@@ -54,24 +54,24 @@ const buildXMLObj = (input: {
         title: channel.title,
         description: channel.description,
         link: channel.link,
-        ...optionalProp<Atom["link"], XMLAtomLinkTag>(
+        ...optionalProp<Atom["link"], ChannelAtomLink>(
           "atom:link",
           atom?.link,
           toXMLAtomLinkTag,
         ),
         ...optionalProp("category", channel.category),
-        ...optionalProp<Cloud, XMLCloudTag>(
+        ...optionalProp<Cloud, ChannelCloud>(
           "cloud",
           channel.cloud,
-          toXMLCloudTag,
+          toChannelCloud,
         ),
         ...optionalProp<string>("copyright", channel.copyright),
         ...optionalProp<string>("generator", channel.generator),
         ...optionalProp<string>("docs", channel.docs),
-        ...optionalProp<Image, XMLImageTag>(
+        ...optionalProp<Image, ChannelImage>(
           "image",
           channel.image,
-          toXMLImageTag,
+          toChannelImage,
         ),
         ...optionalProp<string>("language", channel.language),
         ...optionalProp<string>(
@@ -89,30 +89,29 @@ const buildXMLObj = (input: {
           "skipHours",
           channel.skipHours ? channel.skipHours.toString() : undefined,
         ),
-        ...optionalProp<TextInput, XMLTextInputTag>(
+        ...optionalProp<TextInput, ChannelTextInput>(
           "textInput",
           channel.textInput,
-          toXMLTextInputTag,
+          toChannelTextInput,
         ),
         ...optionalProp<string>(
           "ttl",
           channel.ttl ? channel.ttl.toString() : undefined,
         ),
         ...optionalProp<string>("webMaster", channel.webMaster),
-        ...optionalProp<Item[], XMLItemTag[]>(
+        ...optionalProp<Item[], ChannelItem[]>(
           "item",
           items,
-          toXMLItemTags,
+          toChannelItem,
         ),
       },
     },
   };
 
-  console.log(xmlObj);
   return xmlObj;
 };
 
-const toXMLCloudTag = (data: Cloud): XMLCloudTag => ({
+const toChannelCloud = (data: Cloud): ChannelCloud => ({
   "@domain": data.domain,
   "@port": data.port,
   "@path": data.path,
@@ -120,7 +119,7 @@ const toXMLCloudTag = (data: Cloud): XMLCloudTag => ({
   "@protocol": data.protocol,
 });
 
-const toXMLImageTag = (data: Image): XMLImageTag => ({
+const toChannelImage = (data: Image): ChannelImage => ({
   title: data.title,
   url: data.url,
   link: data.link,
@@ -132,14 +131,14 @@ const toXMLImageTag = (data: Image): XMLImageTag => ({
   ),
 });
 
-const toXMLTextInputTag = (data: TextInput): XMLTextInputTag => ({
+const toChannelTextInput = (data: TextInput): ChannelTextInput => ({
   title: data.title,
   description: data.description,
   name: data.name,
   link: data.link,
 });
 
-const toXMLItemTags = (data: Item[]): XMLItemTag[] => {
+const toChannelItem = (data: Item[]): ChannelItem[] => {
   return data.map((item) => ({
     ...optionalProp<string>("title", item.title),
     ...optionalProp<string>("description", item.description),
@@ -147,38 +146,38 @@ const toXMLItemTags = (data: Item[]): XMLItemTag[] => {
     ...optionalProp<string>("author", item.author),
     ...optionalProp<string[]>("category", item.category),
     ...optionalProp<string>("comments", item.comments),
-    ...optionalProp<Enclosure, XMLEnclosureTag>(
+    ...optionalProp<Enclosure, ItemEnclosure>(
       "enclosure",
       item.enclosure,
-      toXMLEnclosureTag,
+      toItemEnclosure,
     ),
-    ...optionalProp<Guid, XMLGuidTag>("guid", item.guid, toXMLGuidTag),
+    ...optionalProp<Guid, ItemGuid>("guid", item.guid, toItemGuid),
     ...optionalProp<string>("pubDate", item.pubDate),
-    ...optionalProp<Source, XMLSourceTag>(
+    ...optionalProp<Source, ItemSource>(
       "source",
       item.source,
-      toXMLSourceTag,
+      toItemSource,
     ),
   }));
 };
 
-const toXMLEnclosureTag = (data: Enclosure): XMLEnclosureTag => ({
+const toItemEnclosure = (data: Enclosure): ItemEnclosure => ({
   "@url": data.url,
   "@length": data.length,
   "@type": data.type,
 });
 
-const toXMLGuidTag = (data: Guid): XMLGuidTag => ({
+const toItemGuid = (data: Guid): ItemGuid => ({
   $value: data.value,
   "@isPermaLink": data.isPermaLink ? "true" : "false",
 });
 
-const toXMLSourceTag = (data: Source): XMLSourceTag => ({
+const toItemSource = (data: Source): ItemSource => ({
   $value: data.value,
   "@url": data.url,
 });
 
-const toXMLAtomLinkTag = (data: Atom["link"]): XMLAtomLinkTag => ({
+const toXMLAtomLinkTag = (data: Atom["link"]): ChannelAtomLink => ({
   "@href": data.href,
   "@rel": data.rel,
   "@type": data.type,
@@ -187,12 +186,12 @@ const toXMLAtomLinkTag = (data: Atom["link"]): XMLAtomLinkTag => ({
 export {
   buildXMLObj,
   optionalProp,
+  toChannelCloud,
+  toChannelImage,
+  toChannelItem,
+  toChannelTextInput,
+  toItemEnclosure,
+  toItemGuid,
+  toItemSource,
   toXMLAtomLinkTag,
-  toXMLCloudTag,
-  toXMLEnclosureTag,
-  toXMLGuidTag,
-  toXMLImageTag,
-  toXMLItemTags,
-  toXMLSourceTag,
-  toXMLTextInputTag,
 };

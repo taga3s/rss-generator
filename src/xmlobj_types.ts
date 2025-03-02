@@ -1,4 +1,4 @@
-export type XMLCloudTag = {
+export type ChannelCloud = {
   "@domain": string;
   "@port": number;
   "@path": string;
@@ -6,7 +6,7 @@ export type XMLCloudTag = {
   "@protocol": string;
 };
 
-export type XMLImageTag = {
+export type ChannelImage = {
   title: string;
   url: string;
   link: string;
@@ -15,43 +15,43 @@ export type XMLImageTag = {
   height?: string;
 };
 
-export type XMLTextInputTag = {
+export type ChannelTextInput = {
   title: string;
   description: string;
   name: string;
   link: string;
 };
 
-export type XMLItemTag = {
+export type ChannelItem = {
   title?: string;
   description?: string;
   link?: string;
   author?: string;
   category?: string;
   comments?: string;
-  enclosure?: XMLEnclosureTag;
-  guid?: XMLGuidTag;
+  enclosure?: ItemEnclosure;
+  guid?: ItemGuid;
   pubDate?: string;
-  source?: XMLSourceTag;
+  source?: ItemSource;
 };
 
-export type XMLEnclosureTag = {
+export type ItemEnclosure = {
   "@url": string;
   "@length": number;
   "@type": string;
 };
 
-export type XMLGuidTag = {
+export type ItemGuid = {
   $value: string;
   "@isPermaLink": string;
 };
 
-export type XMLSourceTag = {
+export type ItemSource = {
   $value: string;
   "@url": string;
 };
 
-export type XMLAtomLinkTag = {
+export type ChannelAtomLink = {
   "@href": string;
   "@rel": string;
   "@type": string;
