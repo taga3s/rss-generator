@@ -1,15 +1,18 @@
 import { assertEquals } from "@std/assert/equals";
 import { stringifyValueNode } from "./stringify.ts";
-import { ValueNode, XMLTagNode } from "./tree.ts";
+import { ValueNode, XMLDeclarationNode, XMLTagNode } from "./tree.ts";
 import { stringifyXMLNode } from "./stringify.ts";
 
-Deno.test("stringify ValueNode with value string", () => {
-  const node: ValueNode = {
-    type: "value",
-    value: "example",
+Deno.test("stringify XMLNode which is DeclarationNode", () => {
+  const node: XMLDeclarationNode = {
+    type: "declaration",
+    attributes: {
+      version: "1.0",
+      encoding: "UTF-8",
+    },
   };
-  const expected = "example";
-  assertEquals(stringifyValueNode(node), expected);
+  const expected = '<?xml version="1.0" encoding="UTF-8"?>';
+  assertEquals(stringifyXMLNode(node, 0), expected);
 });
 
 Deno.test("stringify XMLNode with children", () => {
@@ -57,4 +60,13 @@ Deno.test("stringify XMLNode with attributes", () => {
   };
   const expected = '<example version="2.0">example</example>';
   assertEquals(stringifyXMLNode(node, 0), expected);
+});
+
+Deno.test("stringify ValueNode with value string", () => {
+  const node: ValueNode = {
+    type: "value",
+    value: "example",
+  };
+  const expected = "example";
+  assertEquals(stringifyValueNode(node), expected);
 });

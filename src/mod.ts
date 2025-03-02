@@ -7,7 +7,6 @@ export type {
   Guid,
   Image,
   Item,
-  RSS,
   SkipDays,
   Source,
   TextInput,

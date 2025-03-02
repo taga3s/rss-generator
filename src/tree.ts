@@ -11,6 +11,11 @@ interface Node {
   type: string;
 }
 
+interface XMLDeclarationNode extends Node {
+  type: "declaration";
+  attributes: { [key: string]: string };
+}
+
 interface XMLTagNode extends Node {
   type: "tag";
   tagName: string;
@@ -23,29 +28,39 @@ interface ValueNode extends Node {
   value: string;
 }
 
+// Extract attributes which start with "@" from the input object
+const extractAttributes = (input: XMLObj): { [key: string]: string } => {
+  const attributes: { [key: string]: string } = {};
+  for (const key of Object.keys(input)) {
+    if (key.startsWith("@") && isString(input[key])) {
+      attributes[key.substring(1)] = input[key];
+      delete input[key];
+    }
+  }
+  return attributes;
+};
+
+// Extract "$value" from the input object
+const extractValue = (input: XMLObj): string | undefined =>
+  isString(input.$value) ? input.$value : undefined;
+
+const createXMLDeclarationNode = (
+  children: XMLObj,
+): XMLDeclarationNode => {
+  const attributes = extractAttributes(children);
+  return {
+    type: "declaration",
+    attributes,
+  };
+};
+
 const createXMLTagNode = (
   name: string,
   children: XMLObj | string,
 ): XMLTagNode => {
   if (isXMLObj(children)) {
-    // Extract attributes which start with "@" from the input object
-    const _extractAttributes = (input: XMLObj): { [key: string]: string } => {
-      const attributes: { [key: string]: string } = {};
-      for (const key of Object.keys(input)) {
-        if (key.startsWith("@") && isString(input[key])) {
-          attributes[key.substring(1)] = input[key];
-          delete input[key];
-        }
-      }
-      return attributes;
-    };
-
-    // Extract "$value" from the input object
-    const _extractValue = (input: XMLObj): string | undefined =>
-      isString(input.$value) ? input.$value : undefined;
-
-    const attributes = _extractAttributes(children);
-    const value = _extractValue(children);
+    const attributes = extractAttributes(children);
+    const value = extractValue(children);
 
     if (attributes || value) {
       return {
@@ -57,11 +72,19 @@ const createXMLTagNode = (
     }
   }
 
-  return ({
+  if (isString(children)) {
+    return {
+      type: "tag",
+      tagName: name,
+      children: createValueNodes(children),
+    };
+  }
+
+  return {
     type: "tag",
     tagName: name,
-    children: createNodes(children),
-  });
+    children: createXMLTagNodes(children),
+  };
 };
 
 const createXMLTagNodes = (xmlObj: XMLObj): XMLTagNode[] => {
@@ -91,30 +114,36 @@ const createValueNodes = (
   value: Value,
 ): ValueNode[] => [createValueNode(value)];
 
-const createNodes = (input: XMLObj | string): (XMLTagNode | ValueNode)[] => {
-  // If the input is an object, create multiple nodes
-  if (isXMLObj(input)) {
-    return createXMLTagNodes(input);
+const createXMLRootNodes = (
+  xmlObj: XMLObj,
+): (XMLDeclarationNode | XMLTagNode)[] => {
+  const nodes: (XMLDeclarationNode | XMLTagNode)[] = [];
+
+  for (const [key, value] of Object.entries(xmlObj)) {
+    if (isXMLObj(value)) {
+      if (key === "xml") {
+        nodes.push(createXMLDeclarationNode(value));
+        continue;
+      }
+
+      nodes.push(createXMLTagNode(key, value));
+    }
   }
 
-  // If the input is a string, create a value node
-  if (isString(input)) {
-    return createValueNodes(input);
-  }
-
-  return [];
+  return nodes;
 };
 
 /**
  * Create an XML tree from the input object. This is an entry point.
  */
-const createXMLTree = (input: XMLObj): XMLTagNode[] => createXMLTagNodes(input);
+const createXMLTree = (input: XMLObj): (XMLDeclarationNode | XMLTagNode)[] =>
+  createXMLRootNodes(input);
 
 export {
-  createNodes,
   createValueNode,
+  createXMLDeclarationNode,
   createXMLTagNode,
   createXMLTagNodes,
   createXMLTree,
 };
-export type { ValueNode, XMLTagNode };
+export type { ValueNode, XMLDeclarationNode, XMLTagNode };

@@ -1,4 +1,4 @@
-import { ValueNode, XMLTagNode } from "./tree.ts";
+import { ValueNode, XMLDeclarationNode, XMLTagNode } from "./tree.ts";
 
 const stringifyValueNode = (node: ValueNode): string => {
   return `${node.value}`;
@@ -28,7 +28,10 @@ const stringifyNodes = (
   };
 };
 
-const stringifyXMLNode = (node: XMLTagNode, indentLevel: number): string => {
+const stringifyXMLNode = (
+  node: XMLDeclarationNode | XMLTagNode,
+  indentLevel: number,
+): string => {
   const _stringifyAttributes = (
     attributes: { [key: string]: string },
   ): string => {
@@ -40,6 +43,10 @@ const stringifyXMLNode = (node: XMLTagNode, indentLevel: number): string => {
   const attributes = node.attributes
     ? _stringifyAttributes(node.attributes)
     : "";
+
+  if (node.type === "declaration") {
+    return `<?xml${_stringifyAttributes(node.attributes)}?>`;
+  }
 
   if (node.children.length === 0) {
     return `<${node.tagName}${attributes}/>`;
@@ -66,7 +73,7 @@ const stringifyXMLNode = (node: XMLTagNode, indentLevel: number): string => {
 /**
  * Converts an array of XMLNodes to a XML String. This is an entry point.
  */
-const stringify = (nodes: XMLTagNode[]): string => {
+const stringify = (nodes: (XMLDeclarationNode | XMLTagNode)[]): string => {
   const indentLevel = 0;
   return nodes.map((node) => stringifyXMLNode(node, indentLevel)).join("\n");
 };
