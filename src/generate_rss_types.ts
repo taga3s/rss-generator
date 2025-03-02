@@ -1,8 +1,3 @@
-// type RSS = {
-//   version: "2.0";
-//   [namespace: string]: string;
-// };
-
 type Channel = {
   title: string;
 
@@ -64,8 +59,10 @@ type Image = {
 
   link: string;
 
+  /** Maximum value for width is 144, default value is 88. */
   width?: number;
 
+  /** Maximum value for height is 400, default value is 31. */
   height?: number;
 
   description?: string;
@@ -91,11 +88,11 @@ type SkipDays =
   | "Sunday";
 
 type Item = {
-  title: string;
+  title?: string;
 
-  link: string;
+  link?: string;
 
-  description: string;
+  description?: string;
 
   author?: string;
 
@@ -139,7 +136,6 @@ export type {
   Guid,
   Image,
   Item,
-  // RSS,
   SkipDays,
   Source,
   TextInput,

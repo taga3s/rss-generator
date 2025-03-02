@@ -131,9 +131,9 @@ const toXMLTextInputTag = (data: TextInput): XMLTextInputTag => ({
 
 const toXMLItemTags = (data: Item[]): XMLItemTag[] => {
   return data.map((item) => ({
-    title: item.title,
-    description: item.description,
-    link: item.link,
+    ...optionalProp<string>("title", item.title),
+    ...optionalProp<string>("description", item.description),
+    ...optionalProp<string>("link", item.link),
     ...optionalProp<string>("author", item.author),
     ...optionalProp<string[]>("category", item.category),
     ...optionalProp<string>("comments", item.comments),

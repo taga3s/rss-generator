@@ -23,9 +23,9 @@ export type XMLTextInputTag = {
 };
 
 export type XMLItemTag = {
-  title: string;
-  description: string;
-  link: string;
+  title?: string;
+  description?: string;
+  link?: string;
   author?: string;
   category?: string;
   comments?: string;
