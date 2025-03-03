@@ -5,7 +5,7 @@ import {
   isXMLObj,
   type Value,
   type XMLObj,
-} from "./tree_types.ts";
+} from "./ast_types.ts";
 
 interface Node {
   type: string;
@@ -28,7 +28,9 @@ interface ValueNode extends Node {
   value: string;
 }
 
-// Extract attributes which start with "@" from the input object
+/**
+ * Extract attributes which start with "@" from the input object
+ */
 const extractAttributes = (input: XMLObj): { [key: string]: string } => {
   const attributes: { [key: string]: string } = {};
   for (const key of Object.keys(input)) {
@@ -40,7 +42,9 @@ const extractAttributes = (input: XMLObj): { [key: string]: string } => {
   return attributes;
 };
 
-// Extract "$value" from the input object
+/**
+ * Extract "$value" from the input object
+ */
 const extractValue = (input: XMLObj): string | undefined =>
   isString(input.$value) ? input.$value : undefined;
 

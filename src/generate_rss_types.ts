@@ -59,10 +59,14 @@ export type Image = {
 
   link: string;
 
-  /** Maximum value for width is 144, default value is 88. */
+  /**
+   * Maximum value for width is 144, default value is 88.
+   */
   width?: number;
 
-  /** Maximum value for height is 400, default value is 31. */
+  /**
+   * Maximum value for height is 400, default value is 31.
+   */
   height?: number;
 
   description?: string;

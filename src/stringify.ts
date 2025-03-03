@@ -1,4 +1,4 @@
-import type { ValueNode, XMLDeclarationNode, XMLTagNode } from "./tree.ts";
+import type { ValueNode, XMLDeclarationNode, XMLTagNode } from "./ast.ts";
 
 export const stringifyValueNode = (node: ValueNode): string => {
   return `${node.value}`;

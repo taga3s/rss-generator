@@ -1,5 +1,5 @@
 import { stringify } from "./stringify.ts";
-import { createXMLTree } from "./tree.ts";
+import { createXMLTree } from "./ast.ts";
 import type { Atom, Channel, Item } from "./generate_rss_types.ts";
 import { buildXMLObj } from "./xmlobj.ts";
 

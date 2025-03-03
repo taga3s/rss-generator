@@ -6,7 +6,7 @@ import {
   type ValueNode,
   type XMLDeclarationNode,
   type XMLTagNode,
-} from "./tree.ts";
+} from "./ast.ts";
 import { assertEquals } from "@std/assert";
 
 Deno.test("it should return XMlDeclarationNode", () => {

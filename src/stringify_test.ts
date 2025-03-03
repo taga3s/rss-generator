@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert/equals";
-import type { ValueNode, XMLDeclarationNode, XMLTagNode } from "./tree.ts";
+import type { ValueNode, XMLDeclarationNode, XMLTagNode } from "./ast.ts";
 import { stringifyValueNode, stringifyXMLNode } from "./stringify.ts";
 
 Deno.test("stringify XMLNode which is DeclarationNode", () => {
