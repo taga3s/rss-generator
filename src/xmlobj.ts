@@ -178,7 +178,7 @@ const toChannelItem = (data: Item[]): ChannelItem[] => {
       item.source,
       toItemSource,
     ),
-    ...optionalProp<string>("content:encoded", item.content_encoded),
+    ...optionalProp<string>("content:encoded", item.content?.encoded),
   }));
 };
 

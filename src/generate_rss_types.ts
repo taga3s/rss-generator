@@ -96,12 +96,12 @@ export type SkipDays =
 export type Atom = {
   link: {
     href: string;
-  
+
     rel: "alternate" | "enclosure" | "related" | "self" | "via";
-  
+
     type: string;
   };
-}
+};
 
 export type Item = {
   title?: string;
@@ -124,7 +124,7 @@ export type Item = {
 
   source?: Source;
 
-  content_encoded?: string;
+  content?: Content;
 };
 
 export type Enclosure = {
@@ -145,6 +145,10 @@ export type Source = {
   value: string;
 
   url: string;
+};
+
+export type Content = {
+  encoded: string;
 };
 
 export type Namespaces = ("atom" | "content")[];
