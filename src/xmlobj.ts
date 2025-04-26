@@ -44,6 +44,9 @@ const buildNamespaces = (namespaces: Namespaces): { [key: string]: string } => {
       case "atom":
         ret["@xmlns:atom"] = "http://www.w3.org/2005/Atom";
         break;
+      case "content":
+        ret["@xmlns:content"] = "http://purl.org/rss/1.0/modules/content/";
+        break;
       default:
         continue;
     }
@@ -175,6 +178,7 @@ const toChannelItem = (data: Item[]): ChannelItem[] => {
       item.source,
       toItemSource,
     ),
+    ...optionalProp<string>("content:encoded", item.content_encoded),
   }));
 };
 

@@ -33,6 +33,7 @@ export type ChannelItem = {
   guid?: ItemGuid;
   pubDate?: string;
   source?: ItemSource;
+  content_encoded?: string;
 };
 
 export type ItemEnclosure = {
