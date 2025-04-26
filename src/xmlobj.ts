@@ -1,5 +1,5 @@
 import type {
-  AtomLink,
+  Atom,
   Channel,
   Cloud,
   Enclosure,
@@ -74,9 +74,9 @@ const buildXMLObj = (input: {
         title: channel.title,
         description: channel.description,
         link: channel.link,
-        ...optionalProp<AtomLink, ChannelAtomLink>(
+        ...optionalProp<Atom["link"], ChannelAtomLink>(
           "atom:link",
-          channel.atom_link,
+          channel.atom?.link,
           toXMLAtomLinkTag,
         ),
         ...optionalProp("category", channel.category),
@@ -178,7 +178,7 @@ const toChannelItem = (data: Item[]): ChannelItem[] => {
       item.source,
       toItemSource,
     ),
-    ...optionalProp<string>("content:encoded", item.content_encoded),
+    ...optionalProp<string>("content:encoded", item.content?.encoded),
   }));
 };
 
@@ -198,7 +198,7 @@ const toItemSource = (data: Source): ItemSource => ({
   "@url": data.url,
 });
 
-const toXMLAtomLinkTag = (data: AtomLink): ChannelAtomLink => ({
+const toXMLAtomLinkTag = (data: Atom["link"]): ChannelAtomLink => ({
   "@href": data.href,
   "@rel": data.rel,
   "@type": data.type,

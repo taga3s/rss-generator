@@ -37,7 +37,7 @@ export type Channel = {
 
   skipHours?: number;
 
-  atom_link?: AtomLink;
+  atom?: Atom;
 };
 
 export type Cloud = {
@@ -93,12 +93,14 @@ export type SkipDays =
   | "Saturday"
   | "Sunday";
 
-export type AtomLink = {
-  href: string;
+export type Atom = {
+  link: {
+    href: string;
 
-  rel: "alternate" | "enclosure" | "related" | "self" | "via";
+    rel: "alternate" | "enclosure" | "related" | "self" | "via";
 
-  type: string;
+    type: string;
+  };
 };
 
 export type Item = {
@@ -122,7 +124,7 @@ export type Item = {
 
   source?: Source;
 
-  content_encoded?: string;
+  content?: Content;
 };
 
 export type Enclosure = {
@@ -143,6 +145,10 @@ export type Source = {
   value: string;
 
   url: string;
+};
+
+export type Content = {
+  encoded: string;
 };
 
 export type Namespaces = ("atom" | "content")[];

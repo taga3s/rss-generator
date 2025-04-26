@@ -9,10 +9,12 @@ import {
 const channel: Channel = {
   title: "Example Web",
   link: "https://example.com",
-  atom_link: {
-    href: "https://example.com/rss.xml",
-    rel: "self",
-    type: "application/atom+xml",
+  atom: {
+    link: {
+      href: "https://example.com/rss.xml",
+      rel: "self",
+      type: "application/atom+xml",
+    },
   },
   description: cdata("Example description"),
   ttl: 60,
@@ -25,7 +27,9 @@ const items: Item[] = [
   {
     title: "Example Title 1",
     description: cdata("Example description"),
-    content_encoded: cdata("<p>Example content</p>"),
+    content: {
+      encoded: cdata("<p>Example content</p>"),
+    },
     link: "https://example.com/articles/1",
     guid: {
       isPermaLink: true,
@@ -36,7 +40,9 @@ const items: Item[] = [
   {
     title: "Example Title 2",
     description: cdata("Example description"),
-    content_encoded: cdata("<p>Example content</p>"),
+    content: {
+      encoded: cdata("<p>Example content</p>"),
+    },
     link: "https://example.com/articles/2",
     guid: {
       isPermaLink: true,
