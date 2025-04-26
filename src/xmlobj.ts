@@ -47,6 +47,9 @@ const buildNamespaces = (namespaces: Namespaces): { [key: string]: string } => {
       case "content":
         ret["@xmlns:content"] = "http://purl.org/rss/1.0/modules/content/";
         break;
+      case "dc":
+        ret["@xmlns:dc"] = "http://purl.org/dc/elements/1.1/";
+        break;
       default:
         continue;
     }
@@ -162,9 +165,11 @@ const toChannelItem = (data: Item[]): ChannelItem[] => {
   return data.map((item) => ({
     ...optionalProp<string>("title", item.title),
     ...optionalProp<string>("description", item.description),
+    ...optionalProp<string>("content:encoded", item.content?.encoded),
     ...optionalProp<string>("link", item.link),
     ...optionalProp<string>("author", item.author),
     ...optionalProp<string[]>("category", item.category),
+    ...optionalProp<string>("dc:creator", item.dc?.creator),
     ...optionalProp<string>("comments", item.comments),
     ...optionalProp<Enclosure, ItemEnclosure>(
       "enclosure",
@@ -178,7 +183,6 @@ const toChannelItem = (data: Item[]): ChannelItem[] => {
       item.source,
       toItemSource,
     ),
-    ...optionalProp<string>("content:encoded", item.content?.encoded),
   }));
 };
 

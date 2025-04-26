@@ -93,6 +93,7 @@ export type SkipDays =
   | "Saturday"
   | "Sunday";
 
+// Following http://www.w3.org/2005/Atom.
 export type Atom = {
   link: {
     href: string;
@@ -125,6 +126,8 @@ export type Item = {
   source?: Source;
 
   content?: Content;
+
+  dc?: DC;
 };
 
 export type Enclosure = {
@@ -147,8 +150,15 @@ export type Source = {
   url: string;
 };
 
+// Following http://purl.org/rss/1.0/modules/content/.
 export type Content = {
   encoded: string;
 };
 
-export type Namespaces = ("atom" | "content")[];
+// Following http://purl.org/dc/elements/1.1/.
+export type DC = {
+  creator: string;
+  // TODO: Add other properties.
+};
+
+export type Namespaces = ("atom" | "content" | "dc")[];
