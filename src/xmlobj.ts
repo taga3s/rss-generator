@@ -61,7 +61,7 @@ const buildNamespaces = (namespaces: Namespaces): { [key: string]: string } => {
   return ret;
 };
 
-const buildXMLObj = (input: {
+export const buildXMLObj = (input: {
   channel: Channel;
   items?: Item[];
   namespaces?: Namespaces;
@@ -128,7 +128,7 @@ const buildXMLObj = (input: {
         ...optionalProp<Item[], ChannelItem[]>(
           "item",
           items,
-          toChannelItem,
+          toItems,
         ),
       },
     },
@@ -145,17 +145,23 @@ const toChannelCloud = (data: Cloud): ChannelCloud => ({
   "@protocol": data.protocol,
 });
 
-const toChannelImage = (data: Image): ChannelImage => ({
-  title: data.title,
-  url: data.url,
-  link: data.link,
-  ...optionalProp<string>("description", data.description),
-  ...optionalProp<string>("width", data.width ? data.width.toString() : "88"),
-  ...optionalProp<string>(
-    "height",
-    data.height ? data.height.toString() : "31",
-  ),
-});
+const DEFAULT_IMAGE_WIDTH = "88";
+const DEFAULT_IMAGE_HEIGHT = "31";
+
+const toChannelImage = (data: Image): ChannelImage => {
+  const toWidth = (val: number | undefined): string =>
+    val ? val.toString() : DEFAULT_IMAGE_WIDTH;
+  const toHeight = (val: number | undefined): string =>
+    val ? val.toString() : DEFAULT_IMAGE_HEIGHT;
+  return ({
+    title: data.title,
+    url: data.url,
+    link: data.link,
+    ...optionalProp<string>("description", data.description),
+    ...optionalProp<number, string>("width", data.width, toWidth),
+    ...optionalProp<number, string>("height", data.height, toHeight),
+  });
+};
 
 const toChannelTextInput = (data: TextInput): ChannelTextInput => ({
   title: data.title,
@@ -164,31 +170,33 @@ const toChannelTextInput = (data: TextInput): ChannelTextInput => ({
   link: data.link,
 });
 
-const toChannelItem = (data: Item[]): ChannelItem[] => {
-  return data.map((item) => ({
-    ...optionalProp<string>("title", item.title),
-    ...optionalProp<string>("description", item.description),
-    ...optionalProp<string>("content:encoded", item.content?.encoded),
-    ...optionalProp<string>("link", item.link),
-    ...optionalProp<string>("author", item.author),
-    ...optionalProp<string[]>("category", item.category),
-    ...optionalProp<string>("dc:creator", item.dc?.creator),
-    ...optionalProp<string>("comments", item.comments),
-    ...optionalProp<string>("slash:comments", item.slash?.comments.toString()),
-    ...optionalProp<Enclosure, ItemEnclosure>(
-      "enclosure",
-      item.enclosure,
-      toItemEnclosure,
-    ),
-    ...optionalProp<Guid, ItemGuid>("guid", item.guid, toItemGuid),
-    ...optionalProp<string>("pubDate", item.pubDate),
-    ...optionalProp<Source, ItemSource>(
-      "source",
-      item.source,
-      toItemSource,
-    ),
-  }));
+const toItems = (data: Item[]): ChannelItem[] => {
+  return data.map((item) => toItem(item));
 };
+
+const toItem = (item: Item): ChannelItem => ({
+  ...optionalProp<string>("title", item.title),
+  ...optionalProp<string>("description", item.description),
+  ...optionalProp<string>("content:encoded", item.content?.encoded),
+  ...optionalProp<string>("link", item.link),
+  ...optionalProp<string>("author", item.author),
+  ...optionalProp<string[]>("category", item.category),
+  ...optionalProp<string>("dc:creator", item.dc?.creator),
+  ...optionalProp<string>("comments", item.comments),
+  ...optionalProp<string>("slash:comments", item.slash?.comments.toString()),
+  ...optionalProp<Enclosure, ItemEnclosure>(
+    "enclosure",
+    item.enclosure,
+    toItemEnclosure,
+  ),
+  ...optionalProp<Guid, ItemGuid>("guid", item.guid, toItemGuid),
+  ...optionalProp<string>("pubDate", item.pubDate),
+  ...optionalProp<Source, ItemSource>(
+    "source",
+    item.source,
+    toItemSource,
+  ),
+});
 
 const toItemEnclosure = (data: Enclosure): ItemEnclosure => ({
   "@url": data.url,
@@ -211,16 +219,3 @@ const toXMLAtomLinkTag = (data: Atom["link"]): ChannelAtomLink => ({
   "@rel": data.rel,
   "@type": data.type,
 });
-
-export {
-  buildXMLObj,
-  optionalProp,
-  toChannelCloud,
-  toChannelImage,
-  toChannelItem,
-  toChannelTextInput,
-  toItemEnclosure,
-  toItemGuid,
-  toItemSource,
-  toXMLAtomLinkTag,
-};

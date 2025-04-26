@@ -11,19 +11,19 @@ interface Node {
   type: string;
 }
 
-interface XMLDeclarationNode extends Node {
+export interface XMLDeclarationNode extends Node {
   type: "declaration";
   attributes: { [key: string]: string };
 }
 
-interface XMLTagNode extends Node {
+export interface XMLTagNode extends Node {
   type: "tag";
   tagName: string;
   children: (XMLTagNode | ValueNode)[];
   attributes?: { [key: string]: string };
 }
 
-interface ValueNode extends Node {
+export interface ValueNode extends Node {
   type: "value";
   value: string;
 }
@@ -48,7 +48,7 @@ const extractAttributes = (input: XMLObj): { [key: string]: string } => {
 const extractValue = (input: XMLObj): string | undefined =>
   isString(input.$value) ? input.$value : undefined;
 
-const createXMLDeclarationNode = (
+export const createXMLDeclarationNode = (
   children: XMLObj,
 ): XMLDeclarationNode => {
   const attributes = extractAttributes(children);
@@ -58,7 +58,7 @@ const createXMLDeclarationNode = (
   };
 };
 
-const createXMLTagNode = (
+export const createXMLTagNode = (
   name: string,
   children: XMLObj | string,
 ): XMLTagNode => {
@@ -91,7 +91,7 @@ const createXMLTagNode = (
   };
 };
 
-const createXMLTagNodes = (xmlObj: XMLObj): XMLTagNode[] => {
+export const createXMLTagNodes = (xmlObj: XMLObj): XMLTagNode[] => {
   const nodes: XMLTagNode[] = [];
 
   for (const [key, value] of Object.entries(xmlObj)) {
@@ -109,7 +109,7 @@ const createXMLTagNodes = (xmlObj: XMLObj): XMLTagNode[] => {
   return nodes;
 };
 
-const createValueNode = (value: Value): ValueNode => ({
+export const createValueNode = (value: Value): ValueNode => ({
   type: "value",
   value,
 });
@@ -140,14 +140,6 @@ const createXMLRootNodes = (
 /**
  * Create an XML tree from the input object. This is an entry point.
  */
-const createXMLTree = (input: XMLObj): (XMLDeclarationNode | XMLTagNode)[] =>
-  createXMLRootNodes(input);
-
-export {
-  createValueNode,
-  createXMLDeclarationNode,
-  createXMLTagNode,
-  createXMLTagNodes,
-  createXMLTree,
-};
-export type { ValueNode, XMLDeclarationNode, XMLTagNode };
+export const createXMLTree = (
+  input: XMLObj,
+): (XMLDeclarationNode | XMLTagNode)[] => createXMLRootNodes(input);

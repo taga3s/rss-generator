@@ -8,7 +8,7 @@ import { buildXMLObj } from "./xmlobj.ts";
  * @param data - RSS feed data
  * @returns RSS feed as string
  */
-const generateRSS = (
+export const generateRSS = (
   data: { channel: Channel; items?: Item[]; namespaces?: Namespaces },
 ): string => {
   const { channel, items, namespaces } = data;
@@ -19,5 +19,3 @@ const generateRSS = (
 
   return stringify(xmlTree);
 };
-
-export { generateRSS };
