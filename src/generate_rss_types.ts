@@ -138,7 +138,7 @@ export type Source = {
 export type AtomLink = {
   href: string;
 
-  rel: "alternate" | "enclosure" | "self" | "related" | "self" | "via";
+  rel: "alternate" | "enclosure" | "related" | "self" | "via";
 
   type: string;
 };
