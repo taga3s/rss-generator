@@ -128,6 +128,8 @@ export type Item = {
   content?: Content;
 
   dc?: DC;
+
+  slash?: Slash;
 };
 
 export type Enclosure = {
@@ -161,4 +163,9 @@ export type DC = {
   // TODO: Add other properties.
 };
 
-export type Namespaces = ("atom" | "content" | "dc")[];
+// Following http://purl.org/rss/1.0/modules/slash/.
+export type Slash = {
+  comments: number;
+};
+
+export type Namespaces = ("atom" | "content" | "dc" | "slash")[];
