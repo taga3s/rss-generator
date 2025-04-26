@@ -1,14 +1,19 @@
 import {
-  type Atom,
   cdata,
   type Channel,
   generateRSS,
   type Item,
-} from "./mod.ts";
+  type Namespaces,
+} from "../src/mod.ts";
 
 const channel: Channel = {
   title: "Example Web",
   link: "https://example.com",
+  atom_link: {
+    href: "https://example.com/rss.xml",
+    rel: "self",
+    type: "application/atom+xml",
+  },
   description: cdata("Example description"),
   ttl: 60,
   language: "en",
@@ -39,16 +44,10 @@ const items: Item[] = [
   },
 ];
 
-const atom: Atom = {
-  link: {
-    href: "https://example.com/feed",
-    rel: "self",
-    type: "application/rss+xml",
-  },
-};
+const namespaces: Namespaces = ["atom"];
 
 if (import.meta.main) {
-  const xml = generateRSS({ channel, items, atom });
+  const xml = generateRSS({ channel, items, namespaces });
   const data = new TextEncoder().encode(xml);
   await Deno.writeFile("rss.xml", data);
 }
