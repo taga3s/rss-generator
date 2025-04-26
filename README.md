@@ -8,7 +8,11 @@ purposes.
 - [x] generate RSS 2.0 XML (following
       [RSS 2.0 Specification](https://www.rssboard.org/rss-specification))
 - [x] zero dependencies
-- [ ] namespace support
+- [x] namespace support
+  - atom
+  - content
+  - dc
+  - slash
 
 ## example usage
 
@@ -29,6 +33,9 @@ const items: Item[] = [
   {
     title: "Example Title 1",
     description: cdata("Example description"),
+    content: {
+      encoded: cdata("<p>Example content</p>"),
+    },
     link: "https://example.com/articles/1",
     guid: {
       isPermaLink: true,
@@ -39,6 +46,9 @@ const items: Item[] = [
   {
     title: "Example Title 2",
     description: cdata("Example description"),
+    content: {
+      encoded: cdata("<p>Example content</p>"),
+    },
     link: "https://example.com/articles/2",
     guid: {
       isPermaLink: true,
@@ -48,8 +58,10 @@ const items: Item[] = [
   },
 ];
 
+const namespaces: Namespaces = ["atom", "content", "dc", "slash"];,
+
 if (import.meta.main) {
-  const xml = generateRSS({ channel, items });
+  const xml = generateRSS({ channel, items, namespaces });
   const data = new TextEncoder().encode(xml);
   await Deno.writeFile("rss.xml", data);
 }
@@ -60,7 +72,7 @@ if (import.meta.main) {
 
 ## license
 
-- [MIT](https://github.com/taga3s/rss-generator/blob/main/LICENSE)
+[MIT](https://github.com/taga3s/rss-generator/blob/main/LICENSE)
 
 ## author
 
