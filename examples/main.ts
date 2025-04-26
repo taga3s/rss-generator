@@ -30,6 +30,9 @@ const items: Item[] = [
     content: {
       encoded: cdata("<p>Example content</p>"),
     },
+    dc: {
+      creator: "John Doe",
+    },
     link: "https://example.com/articles/1",
     guid: {
       isPermaLink: true,
@@ -43,6 +46,9 @@ const items: Item[] = [
     content: {
       encoded: cdata("<p>Example content</p>"),
     },
+    dc: {
+      creator: "John Doe",
+    },
     link: "https://example.com/articles/2",
     guid: {
       isPermaLink: true,
@@ -52,7 +58,7 @@ const items: Item[] = [
   },
 ];
 
-const namespaces: Namespaces = ["atom", "content"];
+const namespaces: Namespaces = ["atom", "content", "dc"];
 
 if (import.meta.main) {
   const xml = generateRSS({ channel, items, namespaces });
