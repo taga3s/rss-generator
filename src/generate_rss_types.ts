@@ -93,6 +93,14 @@ export type SkipDays =
   | "Saturday"
   | "Sunday";
 
+export type AtomLink = {
+  href: string;
+
+  rel: "alternate" | "enclosure" | "related" | "self" | "via";
+
+  type: string;
+};
+
 export type Item = {
   title?: string;
 
@@ -113,6 +121,8 @@ export type Item = {
   pubDate?: string;
 
   source?: Source;
+
+  content_encoded?: string;
 };
 
 export type Enclosure = {
@@ -135,12 +145,4 @@ export type Source = {
   url: string;
 };
 
-export type AtomLink = {
-  href: string;
-
-  rel: "alternate" | "enclosure" | "related" | "self" | "via";
-
-  type: string;
-};
-
-export type Namespaces = ["atom"];
+export type Namespaces = ("atom" | "content")[];
