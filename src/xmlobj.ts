@@ -50,6 +50,9 @@ const buildNamespaces = (namespaces: Namespaces): { [key: string]: string } => {
       case "dc":
         ret["@xmlns:dc"] = "http://purl.org/dc/elements/1.1/";
         break;
+      case "slash":
+        ret["@xmlns:slash"] = "http://purl.org/rss/1.0/modules/slash/";
+        break;
       default:
         continue;
     }
@@ -171,6 +174,7 @@ const toChannelItem = (data: Item[]): ChannelItem[] => {
     ...optionalProp<string[]>("category", item.category),
     ...optionalProp<string>("dc:creator", item.dc?.creator),
     ...optionalProp<string>("comments", item.comments),
+    ...optionalProp<string>("slash:comments", item.slash?.comments.toString()),
     ...optionalProp<Enclosure, ItemEnclosure>(
       "enclosure",
       item.enclosure,
