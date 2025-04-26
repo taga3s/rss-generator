@@ -36,6 +36,8 @@ export type Channel = {
   skipDays?: SkipDays[];
 
   skipHours?: number;
+
+  atom_link?: AtomLink;
 };
 
 export type Cloud = {
@@ -133,12 +135,12 @@ export type Source = {
   url: string;
 };
 
-export type Atom = {
-  link: {
-    href: string;
+export type AtomLink = {
+  href: string;
 
-    rel: string;
+  rel: "alternate" | "enclosure" | "self" | "related" | "self" | "via";
 
-    type: string;
-  };
+  type: string;
 };
+
+export type Namespaces = ["atom"];
