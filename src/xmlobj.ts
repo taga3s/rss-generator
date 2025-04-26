@@ -1,11 +1,12 @@
 import type {
-  Atom,
+  AtomLink,
   Channel,
   Cloud,
   Enclosure,
   Guid,
   Image,
   Item,
+  Namespaces,
   Source,
   TextInput,
 } from "./generate_rss_types.ts";
@@ -35,12 +36,28 @@ const optionalProp = <TValue, TTransformed = TValue>(
   };
 };
 
+const buildNamespaces = (namespaces: Namespaces): { [key: string]: string } => {
+  const ret: { [key: string]: string } = {};
+
+  for (const ns of namespaces) {
+    switch (ns) {
+      case "atom":
+        ret["@xmlns:atom"] = "http://www.w3.org/2005/Atom";
+        break;
+      default:
+        continue;
+    }
+  }
+
+  return ret;
+};
+
 const buildXMLObj = (input: {
   channel: Channel;
   items?: Item[];
-  atom?: Atom;
+  namespaces?: Namespaces;
 }): XMLObj => {
-  const { channel, items, atom } = input;
+  const { channel, items, namespaces } = input;
 
   const xmlObj = {
     xml: {
@@ -49,14 +66,14 @@ const buildXMLObj = (input: {
     },
     rss: {
       "@version": "2.0",
-      "@xmlns:atom": "http://www.w3.org/2005/Atom",
+      ...(namespaces && buildNamespaces(namespaces)),
       channel: {
         title: channel.title,
         description: channel.description,
         link: channel.link,
-        ...optionalProp<Atom["link"], ChannelAtomLink>(
+        ...optionalProp<AtomLink, ChannelAtomLink>(
           "atom:link",
-          atom?.link,
+          channel.atom_link,
           toXMLAtomLinkTag,
         ),
         ...optionalProp("category", channel.category),
@@ -177,7 +194,7 @@ const toItemSource = (data: Source): ItemSource => ({
   "@url": data.url,
 });
 
-const toXMLAtomLinkTag = (data: Atom["link"]): ChannelAtomLink => ({
+const toXMLAtomLinkTag = (data: AtomLink): ChannelAtomLink => ({
   "@href": data.href,
   "@rel": data.rel,
   "@type": data.type,
