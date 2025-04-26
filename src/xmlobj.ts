@@ -145,11 +145,14 @@ const toChannelCloud = (data: Cloud): ChannelCloud => ({
   "@protocol": data.protocol,
 });
 
+const DEFAULT_IMAGE_WIDTH = "88";
+const DEFAULT_IMAGE_HEIGHT = "31";
+
 const toChannelImage = (data: Image): ChannelImage => {
   const toWidth = (val: number | undefined): string =>
-    val ? val.toString() : "88";
+    val ? val.toString() : DEFAULT_IMAGE_WIDTH;
   const toHeight = (val: number | undefined): string =>
-    val ? val.toString() : "31";
+    val ? val.toString() : DEFAULT_IMAGE_HEIGHT;
   return ({
     title: data.title,
     url: data.url,
