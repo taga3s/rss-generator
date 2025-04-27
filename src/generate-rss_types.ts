@@ -37,7 +37,10 @@ export type Channel = {
 
   skipHours?: number;
 
-  atom?: Atom;
+  // Following http://www.w3.org/2005/Atom.
+  atom?: {
+    link?: AtomLink;
+  };
 };
 
 export type Cloud = {
@@ -93,15 +96,12 @@ export type SkipDays =
   | "Saturday"
   | "Sunday";
 
-// Following http://www.w3.org/2005/Atom.
-export type Atom = {
-  link: {
-    href: string;
+export type AtomLink = {
+  href: string;
 
-    rel: "alternate" | "enclosure" | "related" | "self" | "via";
+  rel: "alternate" | "enclosure" | "related" | "self" | "via";
 
-    type: string;
-  };
+  type: string;
 };
 
 export type Item = {
@@ -125,11 +125,21 @@ export type Item = {
 
   source?: Source;
 
-  content?: Content;
+  // Following http://purl.org/rss/1.0/modules/content/.
+  content?: {
+    encoded?: string;
+  };
 
-  dc?: DC;
+  // Following http://purl.org/dc/elements/1.1/.
+  dc?: {
+    creator?: string;
+    // TODO: Add other properties.
+  };
 
-  slash?: Slash;
+  // Following http://purl.org/rss/1.0/modules/slash/.
+  slash?: {
+    comments?: number;
+  };
 };
 
 export type Enclosure = {
@@ -150,22 +160,6 @@ export type Source = {
   value: string;
 
   url: string;
-};
-
-// Following http://purl.org/rss/1.0/modules/content/.
-export type Content = {
-  encoded: string;
-};
-
-// Following http://purl.org/dc/elements/1.1/.
-export type DC = {
-  creator: string;
-  // TODO: Add other properties.
-};
-
-// Following http://purl.org/rss/1.0/modules/slash/.
-export type Slash = {
-  comments: number;
 };
 
 export type Namespaces = ("atom" | "content" | "dc" | "slash")[];
