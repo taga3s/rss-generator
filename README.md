@@ -17,7 +17,13 @@ purposes.
 ## example usage
 
 ```ts
-import { cdata, Channel, generateRSS, Item } from "@taga3s/rss-generator";
+import {
+  cdata,
+  type Channel,
+  generateRSS,
+  type Item,
+  type Namespaces,
+} from "../src/mod.ts";
 
 const channel: Channel = {
   title: "Example Web",
