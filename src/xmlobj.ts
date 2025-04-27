@@ -1,5 +1,5 @@
 import type {
-  Atom,
+  AtomLink,
   Channel,
   Cloud,
   Enclosure,
@@ -81,7 +81,7 @@ export const buildXMLObj = (input: {
         title: channel.title,
         description: channel.description,
         link: channel.link,
-        ...optionalProps<Atom["link"], ChannelAtomLink>(
+        ...optionalProps<AtomLink, ChannelAtomLink>(
           "atom:link",
           channel.atom?.link,
           toChannelAtomLink,
@@ -186,11 +186,13 @@ const toChannelTextInput = (data: TextInput): ChannelTextInput => ({
   link: data.link,
 });
 
-const toChannelAtomLink = (data: Atom["link"]): ChannelAtomLink => ({
-  "@href": data.href,
-  "@rel": data.rel,
-  "@type": data.type,
-});
+const toChannelAtomLink = (data: AtomLink): ChannelAtomLink => {
+  return {
+    "@href": data.href,
+    "@rel": data.rel,
+    "@type": data.type,
+  };
+};
 
 const toChannelSkipHours = (value: number): string => value.toString();
 
