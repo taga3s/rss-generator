@@ -26,7 +26,7 @@ const optionalProp = <TValue, TTransformed = TValue>(
   key: string,
   value: TValue | undefined,
   transform?: (value: TValue) => TTransformed,
-): { [x: string]: TTransformed | NonNullable<TValue> } | undefined => {
+): { [key: string]: TTransformed | NonNullable<TValue> } | undefined => {
   if (!value) {
     return undefined;
   }
@@ -36,25 +36,19 @@ const optionalProp = <TValue, TTransformed = TValue>(
   };
 };
 
+const NAMESPACE_URLS: { [key: string]: string } = {
+  atom: "http://www.w3.org/2005/Atom",
+  content: "http://purl.org/rss/1.0/modules/content/",
+  dc: "http://purl.org/dc/elements/1.1/",
+  slash: "http://purl.org/rss/1.0/modules/slash/",
+};
+
 const buildNamespaces = (namespaces: Namespaces): { [key: string]: string } => {
   const ret: { [key: string]: string } = {};
 
   for (const ns of namespaces) {
-    switch (ns) {
-      case "atom":
-        ret["@xmlns:atom"] = "http://www.w3.org/2005/Atom";
-        break;
-      case "content":
-        ret["@xmlns:content"] = "http://purl.org/rss/1.0/modules/content/";
-        break;
-      case "dc":
-        ret["@xmlns:dc"] = "http://purl.org/dc/elements/1.1/";
-        break;
-      case "slash":
-        ret["@xmlns:slash"] = "http://purl.org/rss/1.0/modules/slash/";
-        break;
-      default:
-        continue;
+    if (NAMESPACE_URLS[ns]) {
+      ret[`@xmlns:${ns}`] = NAMESPACE_URLS[ns];
     }
   }
 
@@ -85,7 +79,7 @@ export const buildXMLObj = (input: {
           channel.atom?.link,
           toChannelAtomLink,
         ),
-        ...optionalProp("category", channel.category),
+        ...optionalProp<string[]>("category", channel.category),
         ...optionalProp<Cloud, ChannelCloud>(
           "cloud",
           channel.cloud,
@@ -128,7 +122,7 @@ export const buildXMLObj = (input: {
         ...optionalProp<Item[], ChannelItem[]>(
           "item",
           items,
-          toItems,
+          toChannelItems,
         ),
       },
     },
@@ -176,33 +170,33 @@ const toChannelAtomLink = (data: Atom["link"]): ChannelAtomLink => ({
   "@type": data.type,
 });
 
-const toItems = (data: Item[]): ChannelItem[] => {
+const toChannelItems = (data: Item[]): ChannelItem[] => {
+  const toItem = (item: Item): ChannelItem => ({
+    ...optionalProp<string>("title", item.title),
+    ...optionalProp<string>("description", item.description),
+    ...optionalProp<string>("content:encoded", item.content?.encoded),
+    ...optionalProp<string>("link", item.link),
+    ...optionalProp<string>("author", item.author),
+    ...optionalProp<string[]>("category", item.category),
+    ...optionalProp<string>("dc:creator", item.dc?.creator),
+    ...optionalProp<string>("comments", item.comments),
+    ...optionalProp<string>("slash:comments", item.slash?.comments.toString()),
+    ...optionalProp<Enclosure, ItemEnclosure>(
+      "enclosure",
+      item.enclosure,
+      toItemEnclosure,
+    ),
+    ...optionalProp<Guid, ItemGuid>("guid", item.guid, toItemGuid),
+    ...optionalProp<string>("pubDate", item.pubDate),
+    ...optionalProp<Source, ItemSource>(
+      "source",
+      item.source,
+      toItemSource,
+    ),
+  });
+
   return data.map((item) => toItem(item));
 };
-
-const toItem = (item: Item): ChannelItem => ({
-  ...optionalProp<string>("title", item.title),
-  ...optionalProp<string>("description", item.description),
-  ...optionalProp<string>("content:encoded", item.content?.encoded),
-  ...optionalProp<string>("link", item.link),
-  ...optionalProp<string>("author", item.author),
-  ...optionalProp<string[]>("category", item.category),
-  ...optionalProp<string>("dc:creator", item.dc?.creator),
-  ...optionalProp<string>("comments", item.comments),
-  ...optionalProp<string>("slash:comments", item.slash?.comments.toString()),
-  ...optionalProp<Enclosure, ItemEnclosure>(
-    "enclosure",
-    item.enclosure,
-    toItemEnclosure,
-  ),
-  ...optionalProp<Guid, ItemGuid>("guid", item.guid, toItemGuid),
-  ...optionalProp<string>("pubDate", item.pubDate),
-  ...optionalProp<Source, ItemSource>(
-    "source",
-    item.source,
-    toItemSource,
-  ),
-});
 
 const toItemEnclosure = (data: Enclosure): ItemEnclosure => ({
   "@url": data.url,
