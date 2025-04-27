@@ -9,7 +9,7 @@ import type {
   Namespaces,
   Source,
   TextInput,
-} from "./generate_rss_types.ts";
+} from "./generate-rss_types.ts";
 import type { XMLObj } from "./ast_types.ts";
 import type {
   ChannelAtomLink,

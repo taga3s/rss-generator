@@ -1,4 +1,4 @@
-export { generateRSS } from "./generate_rss.ts";
+export { generateRSS } from "./generate-rss.ts";
 export { cdata } from "./cdata.ts";
 export type {
   Channel,
@@ -11,4 +11,4 @@ export type {
   SkipDays,
   Source,
   TextInput,
-} from "./generate_rss_types.ts";
+} from "./generate-rss_types.ts";
