@@ -83,7 +83,7 @@ export const buildXMLObj = (input: {
         ...optionalProp<Atom["link"], ChannelAtomLink>(
           "atom:link",
           channel.atom?.link,
-          toXMLAtomLinkTag,
+          toChannelAtomLink,
         ),
         ...optionalProp("category", channel.category),
         ...optionalProp<Cloud, ChannelCloud>(
@@ -170,6 +170,12 @@ const toChannelTextInput = (data: TextInput): ChannelTextInput => ({
   link: data.link,
 });
 
+const toChannelAtomLink = (data: Atom["link"]): ChannelAtomLink => ({
+  "@href": data.href,
+  "@rel": data.rel,
+  "@type": data.type,
+});
+
 const toItems = (data: Item[]): ChannelItem[] => {
   return data.map((item) => toItem(item));
 };
@@ -212,10 +218,4 @@ const toItemGuid = (data: Guid): ItemGuid => ({
 const toItemSource = (data: Source): ItemSource => ({
   $value: data.value,
   "@url": data.url,
-});
-
-const toXMLAtomLinkTag = (data: Atom["link"]): ChannelAtomLink => ({
-  "@href": data.href,
-  "@rel": data.rel,
-  "@type": data.type,
 });

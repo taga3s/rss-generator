@@ -22,18 +22,26 @@ export type ChannelTextInput = {
   link: string;
 };
 
+export type ChannelAtomLink = {
+  "@href": string;
+  "@rel": string;
+  "@type": string;
+};
+
 export type ChannelItem = {
   title?: string;
   description?: string;
+  "content:encoded"?: string;
   link?: string;
   author?: string;
+  "dc:creator"?: string;
   category?: string;
   comments?: string;
+  "slash:comments"?: string;
   enclosure?: ItemEnclosure;
   guid?: ItemGuid;
   pubDate?: string;
   source?: ItemSource;
-  content_encoded?: string;
 };
 
 export type ItemEnclosure = {
@@ -50,10 +58,4 @@ export type ItemGuid = {
 export type ItemSource = {
   $value: string;
   "@url": string;
-};
-
-export type ChannelAtomLink = {
-  "@href": string;
-  "@rel": string;
-  "@type": string;
 };
