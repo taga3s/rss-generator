@@ -1,3 +1,27 @@
+export type ChannelBase = {
+  title: string;
+  description: string;
+  link: string;
+  "atom:link"?: ChannelAtomLink;
+  category?: string[];
+  cloud?: ChannelCloud;
+  copyright?: string;
+  generator?: string;
+  docs?: string;
+  image?: ChannelImage;
+  language?: string;
+  lastBuildDate?: string;
+  managingEditor?: string;
+  pubDate?: string;
+  rating?: string;
+  skipDays?: string[];
+  skipHours?: string;
+  textInput?: ChannelTextInput;
+  ttl?: string;
+  webMaster?: string;
+  item?: ChannelItem[];
+};
+
 export type ChannelCloud = {
   "@domain": string;
   "@port": number;
