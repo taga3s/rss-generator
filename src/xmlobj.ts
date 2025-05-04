@@ -1,15 +1,16 @@
-import type {
-  AtomLink,
-  Channel,
-  Cloud,
-  Enclosure,
-  Guid,
-  Image,
-  Item,
-  Namespaces,
-  SkipDays,
-  Source,
-  TextInput,
+import {
+  type AtomLink,
+  type Channel,
+  type Cloud,
+  type Enclosure,
+  type Guid,
+  type Image,
+  type Item,
+  NAMESPACE_URLS,
+  type Namespaces,
+  type SkipDays,
+  type Source,
+  type TextInput,
 } from "./generate-rss_types.ts";
 import type { XMLObj } from "./ast_types.ts";
 import type {
@@ -41,18 +42,13 @@ const genOptionalProps = <TObject>() => {
   return optionalProps;
 };
 
-const NAMESPACE_URLS: { [key: string]: string } = {
-  atom: "http://www.w3.org/2005/Atom",
-  content: "http://purl.org/rss/1.0/modules/content/",
-  dc: "http://purl.org/dc/elements/1.1/",
-  slash: "http://purl.org/rss/1.0/modules/slash/",
-};
-
-const buildNamespaces = (namespaces: Namespaces): { [key: string]: string } => {
+const buildNamespacesAttrs = (
+  namespaces: Namespaces,
+): { [key: string]: string } => {
   const ret: { [key: string]: string } = {};
 
   for (const ns of namespaces) {
-    if (NAMESPACE_URLS[ns]) {
+    if (ns in NAMESPACE_URLS) {
       ret[`@xmlns:${ns}`] = NAMESPACE_URLS[ns];
     }
   }
@@ -76,7 +72,7 @@ export const buildXMLObj = (input: {
     },
     rss: {
       "@version": "2.0",
-      ...(namespaces && buildNamespaces(namespaces)),
+      ...(namespaces && buildNamespacesAttrs(namespaces)),
       channel: {
         title: channel.title,
         description: channel.description,

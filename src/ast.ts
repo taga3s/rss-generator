@@ -31,7 +31,7 @@ export interface ValueNode extends Node {
 /**
  * Extract attributes which start with "@" from the input object
  */
-const extractAttributes = (input: XMLObj): { [key: string]: string } => {
+const extractAttrs = (input: XMLObj): { [key: string]: string } => {
   const attributes: { [key: string]: string } = {};
   for (const key of Object.keys(input)) {
     if (key.startsWith("@") && isString(input[key])) {
@@ -51,7 +51,7 @@ const extractValue = (input: XMLObj): string | undefined =>
 export const createXMLDeclarationNode = (
   children: XMLObj,
 ): XMLDeclarationNode => {
-  const attributes = extractAttributes(children);
+  const attributes = extractAttrs(children);
   return {
     type: "declaration",
     attributes,
@@ -63,7 +63,7 @@ export const createXMLTagNode = (
   children: XMLObj | string,
 ): XMLTagNode => {
   if (isXMLObj(children)) {
-    const attributes = extractAttributes(children);
+    const attributes = extractAttrs(children);
     const value = extractValue(children);
 
     if (attributes || value) {
@@ -125,6 +125,7 @@ const createXMLRootNodes = (
 
   for (const [key, value] of Object.entries(xmlObj)) {
     if (isXMLObj(value)) {
+      // If the key represents <xml>, create a declaration node
       if (key === "xml") {
         nodes.push(createXMLDeclarationNode(value));
         continue;
