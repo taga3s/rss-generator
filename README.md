@@ -1,5 +1,7 @@
 # rss-generator
 
+[![JSR badge](https://jsr.io/badges/@taga3s/rss-generator)](https://jsr.io/@taga3s/rss-generator)
+
 A simple RSS 2.0 XML generator. This project is just for fun and learning
 purposes.
 
@@ -23,7 +25,7 @@ import {
   generateRSS,
   type Item,
   type Namespaces,
-} from "../src/mod.ts";
+} from "jsr:@taga3s/rss-generator";
 
 const channel: Channel = {
   title: "Example Web",
