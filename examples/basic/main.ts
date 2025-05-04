@@ -4,7 +4,7 @@ import {
   generateRSS,
   type Item,
   type Namespaces,
-} from "../src/mod.ts";
+} from "../../src/mod.ts";
 
 const channel: Channel = {
   title: "Example Web",
