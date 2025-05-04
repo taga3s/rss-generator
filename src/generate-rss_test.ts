@@ -3,7 +3,9 @@ import { generateRSS } from "./generate-rss.ts";
 import type { Channel, Item, Namespaces } from "./generate-rss_types.ts";
 import { assertSnapshot } from "jsr:@std/testing/snapshot";
 
-const setupXML = (): string => {
+const fixture = (): {
+  xml: string;
+} => {
   const channel: Channel = {
     title: "Example Web",
     link: "https://example.com",
@@ -45,10 +47,12 @@ const setupXML = (): string => {
 
   const namespaces: Namespaces = ["atom", "content", "dc", "slash"];
 
-  return generateRSS({ channel, items, namespaces });
+  return {
+    xml: generateRSS({ channel, items, namespaces }),
+  };
 };
 
-Deno.test("isSnapshotMatch", async (t) => {
-  const xml = setupXML();
+Deno.test("generateRSS", async (t) => {
+  const { xml } = fixture();
   await assertSnapshot(t, xml);
 });
