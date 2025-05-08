@@ -3,18 +3,19 @@
 [![JSR badge](https://jsr.io/badges/@taga3s/rss-generator)](https://jsr.io/@taga3s/rss-generator)
 
 A simple RSS 2.0 XML generator. This project is just for fun and learning
-purposes.
+purpose, so the implementation is intentionally minimal.
 
 ## features
 
-- [x] generate RSS 2.0 XML (following
-      [RSS 2.0 Specification](https://www.rssboard.org/rss-specification))
-- [x] zero dependencies
-- [x] namespace support
-  - atom
-  - content
-  - dc
-  - slash
+- Generates RSS 2.0 XML (following the
+  [RSS 2.0 Specification](https://www.rssboard.org/rss-specification))
+- Zero dependencies
+- Supports a few Namespace (based on
+  [Best Practices Profile 5. Namespace Elements](https://www.rssboard.org/rss-profile#namespace-elements))
+  - [x] [atom](http://www.w3.org/2005/Atom)
+  - [x] [content](http://purl.org/rss/1.0/modules/content/)
+  - [x] [dc](http://purl.org/dc/elements/1.1/)
+  - [x] [slash](http://purl.org/rss/1.0/modules/slash/)
 
 ## example usage
 
