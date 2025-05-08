@@ -132,8 +132,35 @@ export type Item = {
 
   // Following http://purl.org/dc/elements/1.1/.
   dc?: {
+    contributor?: string;
+
+    coverage?: string;
+
     creator?: string;
-    // TODO: Add other properties.
+
+    date?: string;
+
+    description?: string;
+
+    format?: string;
+
+    identifier?: string;
+
+    language?: string;
+
+    publisher?: string;
+
+    relation?: string;
+
+    rights?: string;
+
+    source?: string;
+
+    subject?: string;
+
+    title?: string;
+
+    type?: string;
   };
 
   // Following http://purl.org/rss/1.0/modules/slash/.
