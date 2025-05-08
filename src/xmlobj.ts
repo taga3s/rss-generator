@@ -205,6 +205,7 @@ const toChannelItems = (data: Item[]): ChannelItem[] => {
     ...optionalProps<string>("link", item.link),
     ...optionalProps<string>("author", item.author),
     ...optionalProps<string[]>("category", item.category),
+    ...optionalProps<string>("dc:creator", item.dc?.creator),
     ...optionalProps<string>("comments", item.comments),
     ...optionalProps<number, string>(
       "slash:comments",
@@ -227,25 +228,6 @@ const toChannelItems = (data: Item[]): ChannelItem[] => {
       item.source,
       toItemSource,
     ),
-    /**
-     * - dc namespace
-     * - http://purl.org/dc/elements/1.1/
-     */
-    ...optionalProps<string>("dc:contributor", item.dc?.contributor),
-    ...optionalProps<string>("dc:coverage", item.dc?.coverage),
-    ...optionalProps<string>("dc:creator", item.dc?.creator),
-    ...optionalProps<string>("dc:date", item.dc?.date),
-    ...optionalProps<string>("dc:description", item.dc?.description),
-    ...optionalProps<string>("dc:format", item.dc?.format),
-    ...optionalProps<string>("dc:identifier", item.dc?.identifier),
-    ...optionalProps<string>("dc:language", item.dc?.language),
-    ...optionalProps<string>("dc:publisher", item.dc?.publisher),
-    ...optionalProps<string>("dc:relation", item.dc?.relation),
-    ...optionalProps<string>("dc:rights", item.dc?.rights),
-    ...optionalProps<string>("dc:source", item.dc?.source),
-    ...optionalProps<string>("dc:subject", item.dc?.subject),
-    ...optionalProps<string>("dc:title", item.dc?.title),
-    ...optionalProps<string>("dc:type", item.dc?.type),
   });
 
   return data.map((item) => toItem(item));

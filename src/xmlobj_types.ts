@@ -52,30 +52,13 @@ export type ChannelAtomLink = {
   "@type": string;
 };
 
-type DublinCore = {
-  "dc:contributor"?: string;
-  "dc:coverage"?: string;
-  "dc:creator"?: string;
-  "dc:date"?: string;
-  "dc:description"?: string;
-  "dc:format"?: string;
-  "dc:identifier"?: string;
-  "dc:language"?: string;
-  "dc:publisher"?: string;
-  "dc:relation"?: string;
-  "dc:rights"?: string;
-  "dc:source"?: string;
-  "dc:subject"?: string;
-  "dc:title"?: string;
-  "dc:type"?: string;
-};
-
 export type ChannelItem = {
   title?: string;
   description?: string;
   "content:encoded"?: string;
   link?: string;
   author?: string;
+  "dc:creator"?: string;
   category?: string;
   comments?: string;
   "slash:comments"?: string;
@@ -83,7 +66,7 @@ export type ChannelItem = {
   guid?: ItemGuid;
   pubDate?: string;
   source?: ItemSource;
-} & DublinCore;
+};
 
 export type ItemEnclosure = {
   "@url": string;
