@@ -9,3 +9,16 @@ Deno.test("cdata", () => {
     'CDATA section contains forbidden string "]]>"',
   );
 });
+
+Deno.test("cdata with empty string", () => {
+  assertEquals(cdata(""), "<![CDATA[]]>");
+});
+
+Deno.test("cdata with long string", () => {
+  const longStr = "a".repeat(1000);
+  assertEquals(cdata(longStr), `<![CDATA[${longStr}]]>`);
+});
+
+Deno.test("cdata with special characters", () => {
+  assertEquals(cdata("<>&'\""), "<![CDATA[<>&'\"]]>");
+});
