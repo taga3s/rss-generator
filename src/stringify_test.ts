@@ -77,7 +77,7 @@ Deno.test("stringify XMLNode with special characters in attributes", () => {
     attributes: { a: '"<>&\'"' },
     children: [{ type: "value", value: "ok" }],
   };
-  const expected = '<special a="\"<>&\'\"">ok</special>';
+  const expected = '<special a=""<>&\'"">ok</special>';
   assertEquals(stringifyXMLNode(node, 0), expected);
 });
 
@@ -102,7 +102,7 @@ Deno.test("stringify XMLNode with empty attributes object", () => {
     attributes: {},
     children: [{ type: "value", value: "x" }],
   };
-  const expected = '<noattr>x</noattr>';
+  const expected = "<noattr>x</noattr>";
   assertEquals(stringifyXMLNode(node, 0), expected);
 });
 
@@ -121,7 +121,7 @@ Deno.test("stringify XMLNode with one-char tagName", () => {
     tagName: "x",
     children: [{ type: "value", value: "y" }],
   };
-  const expected = '<x>y</x>';
+  const expected = "<x>y</x>";
   assertEquals(stringifyXMLNode(node, 0), expected);
 });
 
@@ -145,8 +145,8 @@ Deno.test("stringify XMLNode with multiple attributes", () => {
   };
   const result = stringifyXMLNode(node, 0);
   // 属性順は保証されないので部分一致
-  ["a=\"1\"", "b=\"2\"", "c=\"3\""]
-    .forEach(attr => assertEquals(result.includes(attr), true));
+  ['a="1"', 'b="2"', 'c="3"']
+    .forEach((attr) => assertEquals(result.includes(attr), true));
   assertEquals(result.endsWith(">v</multi>"), true);
 });
 
