@@ -1,4 +1,4 @@
-export type ChannelBase = {
+export interface ChannelBase {
   title: string;
   description: string;
   link: string;
@@ -20,39 +20,39 @@ export type ChannelBase = {
   ttl?: string;
   webMaster?: string;
   item?: ChannelItem[];
-};
+}
 
-export type ChannelCloud = {
+export interface ChannelCloud {
   "@domain": string;
   "@port": number;
   "@path": string;
   "@registerProcedure": string;
   "@protocol": string;
-};
+}
 
-export type ChannelImage = {
+export interface ChannelImage {
   title: string;
   url: string;
   link: string;
   description?: string;
   width?: string;
   height?: string;
-};
+}
 
-export type ChannelTextInput = {
+export interface ChannelTextInput {
   title: string;
   description: string;
   name: string;
   link: string;
-};
+}
 
-export type ChannelAtomLink = {
+export interface ChannelAtomLink {
   "@href": string;
   "@rel": string;
   "@type": string;
-};
+}
 
-export type ChannelItem = {
+export interface ChannelItem {
   title?: string;
   description?: string;
   "content:encoded"?: string;
@@ -66,20 +66,20 @@ export type ChannelItem = {
   guid?: ItemGuid;
   pubDate?: string;
   source?: ItemSource;
-};
+}
 
-export type ItemEnclosure = {
+export interface ItemEnclosure {
   "@url": string;
   "@length": number;
   "@type": string;
-};
+}
 
-export type ItemGuid = {
+export interface ItemGuid {
   $value: string;
   "@isPermaLink": string;
-};
+}
 
-export type ItemSource = {
+export interface ItemSource {
   $value: string;
   "@url": string;
-};
+}

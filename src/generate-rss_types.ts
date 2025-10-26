@@ -1,4 +1,4 @@
-export type Channel = {
+export interface Channel {
   title: string;
 
   link: string;
@@ -41,9 +41,9 @@ export type Channel = {
   atom?: {
     link?: AtomLink;
   };
-};
+}
 
-export type Cloud = {
+export interface Cloud {
   domain: string;
 
   port: number;
@@ -53,11 +53,11 @@ export type Cloud = {
   registerProcedure: string;
 
   protocol: Protocol;
-};
+}
 
 export type Protocol = "xml-rpc" | "soap" | "http-post";
 
-export type Image = {
+export interface Image {
   url: string;
 
   title: string;
@@ -75,9 +75,9 @@ export type Image = {
   height?: number;
 
   description?: string;
-};
+}
 
-export type TextInput = {
+export interface TextInput {
   title: string;
 
   description: string;
@@ -85,7 +85,7 @@ export type TextInput = {
   name: string;
 
   link: string;
-};
+}
 
 export type SkipDays =
   | "Monday"
@@ -96,15 +96,15 @@ export type SkipDays =
   | "Saturday"
   | "Sunday";
 
-export type AtomLink = {
+export interface AtomLink {
   href: string;
 
   rel: "alternate" | "enclosure" | "related" | "self" | "via";
 
   type: string;
-};
+}
 
-export type Item = {
+export interface Item {
   title?: string;
 
   link?: string;
@@ -140,27 +140,27 @@ export type Item = {
   slash?: {
     comments?: number;
   };
-};
+}
 
-export type Enclosure = {
+export interface Enclosure {
   url: string;
 
   length: number;
 
   type: string;
-};
+}
 
-export type Guid = {
+export interface Guid {
   value: string;
 
   isPermaLink: boolean;
-};
+}
 
-export type Source = {
+export interface Source {
   value: string;
 
   url: string;
-};
+}
 
 export const NAMESPACE_URLS = {
   atom: "http://www.w3.org/2005/Atom",
