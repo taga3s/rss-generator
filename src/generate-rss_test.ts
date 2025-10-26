@@ -1,7 +1,7 @@
 import { cdata } from "./cdata.ts";
 import { generateRSS } from "./generate-rss.ts";
 import type { Channel, Item, Namespaces } from "./generate-rss_types.ts";
-import { assertSnapshot } from "jsr:@std/testing/snapshot";
+import { assertSnapshot } from "@std/testing/snapshot";
 
 const fixture = (): {
   xml: string;
