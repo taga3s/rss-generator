@@ -9,23 +9,29 @@ import {
 import type { Undefinable } from "./utils/types.ts";
 
 interface Node {
-  type: string;
+  type: NodeTypes;
+}
+
+export enum NodeTypes {
+  XML_DECLARATION = "declaration",
+  XML_TAG = "tag",
+  VALUE = "value",
 }
 
 export interface XMLDeclarationNode extends Node {
-  type: "declaration";
+  type: NodeTypes.XML_DECLARATION;
   attributes: { [key: string]: string };
 }
 
 export interface XMLTagNode extends Node {
-  type: "tag";
+  type: NodeTypes.XML_TAG;
   tagName: string;
   children: (XMLTagNode | ValueNode)[];
   attributes?: { [key: string]: string };
 }
 
 export interface ValueNode extends Node {
-  type: "value";
+  type: NodeTypes.VALUE;
   value: string;
 }
 
@@ -54,7 +60,7 @@ export const createXMLDeclarationNode = (
 ): XMLDeclarationNode => {
   const attributes = extractAttrs(children);
   return {
-    type: "declaration",
+    type: NodeTypes.XML_DECLARATION,
     attributes,
   };
 };
@@ -69,7 +75,7 @@ export const createXMLTagNode = (
 
     if (attributes || value) {
       return {
-        type: "tag",
+        type: NodeTypes.XML_TAG,
         tagName: name,
         ...(Object.keys(attributes).length > 0 ? { attributes } : {}),
         children: value ? createValueNodes(value) : createXMLTagNodes(children),
@@ -79,14 +85,14 @@ export const createXMLTagNode = (
 
   if (isString(children)) {
     return {
-      type: "tag",
+      type: NodeTypes.XML_TAG,
       tagName: name,
       children: createValueNodes(children),
     };
   }
 
   return {
-    type: "tag",
+    type: NodeTypes.XML_TAG,
     tagName: name,
     children: createXMLTagNodes(children),
   };
@@ -111,7 +117,7 @@ export const createXMLTagNodes = (xmlObj: XMLObj): XMLTagNode[] => {
 };
 
 export const createValueNode = (value: Value): ValueNode => ({
-  type: "value",
+  type: NodeTypes.VALUE,
   value,
 });
 
