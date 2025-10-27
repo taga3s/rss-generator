@@ -24,7 +24,7 @@ import type {
   ItemGuid,
   ItemSource,
 } from "./xmlobj_types.ts";
-import type { Undefinable } from "./util_types.ts";
+import type { Undefinable } from "./utils/types.ts";
 
 const genOptionalProps = <TObject>() => {
   const optionalProps = <TValue, TTransformed = TValue>(

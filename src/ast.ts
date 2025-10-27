@@ -6,7 +6,7 @@ import {
   type Value,
   type XMLObj,
 } from "./ast_types.ts";
-import type { Undefinable } from "./util_types.ts";
+import type { Undefinable } from "./utils/types.ts";
 
 interface Node {
   type: string;
