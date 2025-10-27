@@ -6,6 +6,7 @@ import {
   type Value,
   type XMLObj,
 } from "./ast_types.ts";
+import type { Undefinable } from "./util_types.ts";
 
 interface Node {
   type: string;
@@ -45,7 +46,7 @@ const extractAttrs = (input: XMLObj): { [key: string]: string } => {
 /**
  * Extract "$value" from the input object
  */
-const extractValue = (input: XMLObj): string | undefined =>
+const extractValue = (input: XMLObj): Undefinable<string> =>
   isString(input.$value) ? input.$value : undefined;
 
 export const createXMLDeclarationNode = (

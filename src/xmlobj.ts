@@ -24,13 +24,14 @@ import type {
   ItemGuid,
   ItemSource,
 } from "./xmlobj_types.ts";
+import type { Undefinable } from "./util_types.ts";
 
 const genOptionalProps = <TObject>() => {
   const optionalProps = <TValue, TTransformed = TValue>(
     key: keyof TObject,
     value: TValue | undefined,
     transform?: (value: TValue) => TTransformed,
-  ): { [key: string]: TTransformed | NonNullable<TValue> } | undefined => {
+  ): Undefinable<{ [key: string]: TTransformed | NonNullable<TValue> }> => {
     if (!value) {
       return undefined;
     }
