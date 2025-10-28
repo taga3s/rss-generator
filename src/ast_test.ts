@@ -3,6 +3,7 @@ import {
   createXMLDeclarationNode,
   createXMLTagNode,
   createXMLTagNodes,
+  NodeTypes,
   type ValueNode,
   type XMLDeclarationNode,
   type XMLTagNode,
@@ -15,7 +16,7 @@ Deno.test("it should return XMlDeclarationNode", () => {
     "@encoding": "UTF-8",
   });
   const expected: XMLDeclarationNode = {
-    type: "declaration",
+    type: NodeTypes.XML_DECLARATION,
     attributes: {
       version: "1.0",
       encoding: "UTF-8",
@@ -27,7 +28,7 @@ Deno.test("it should return XMlDeclarationNode", () => {
 Deno.test("it should return ValueNode when typeof value === 'string'", () => {
   const node = createValueNode("example");
   const expected: ValueNode = {
-    type: "value",
+    type: NodeTypes.VALUE,
     value: "example",
   };
   assertEquals(node, expected);
@@ -36,10 +37,10 @@ Deno.test("it should return ValueNode when typeof value === 'string'", () => {
 Deno.test("it should return XMLTagNode", () => {
   const node = createXMLTagNode("example", "example");
   const expected: XMLTagNode = {
-    type: "tag",
+    type: NodeTypes.XML_TAG,
     tagName: "example",
     children: [{
-      type: "value",
+      type: NodeTypes.VALUE,
       value: "example",
     }],
   };
@@ -52,13 +53,13 @@ Deno.test("it should return XMLTagNode with attributes", () => {
     "$value": "example",
   });
   const expected: XMLTagNode = {
-    type: "tag",
+    type: NodeTypes.XML_TAG,
     tagName: "example",
     attributes: {
       "version": "2.0",
     },
     children: [{
-      type: "value",
+      type: NodeTypes.VALUE,
       value: "example",
     }],
   };
@@ -68,7 +69,7 @@ Deno.test("it should return XMLTagNode with attributes", () => {
 Deno.test("it should return self-closing XMLTagNode", () => {
   const node = createXMLTagNode("self-closing", {});
   const expected: XMLTagNode = {
-    type: "tag",
+    type: NodeTypes.XML_TAG,
     tagName: "self-closing",
     children: [],
   };
@@ -78,7 +79,7 @@ Deno.test("it should return self-closing XMLTagNode", () => {
 Deno.test("it should return self-closing XMLTagNode with attributes", () => {
   const node = createXMLTagNode("self-closing", { "@version": "2.0" });
   const expected: XMLTagNode = {
-    type: "tag",
+    type: NodeTypes.XML_TAG,
     tagName: "self-closing",
     attributes: {
       "version": "2.0",
@@ -93,20 +94,20 @@ Deno.test("it should return XMLTagNode with children (different tags)", () => {
     parent: { child1: "example", child2: "example" },
   });
   const expected: XMLTagNode[] = [{
-    type: "tag",
+    type: NodeTypes.XML_TAG,
     tagName: "parent",
     children: [{
-      type: "tag",
+      type: NodeTypes.XML_TAG,
       tagName: "child1",
       children: [{
-        type: "value",
+        type: NodeTypes.VALUE,
         value: "example",
       }],
     }, {
-      type: "tag",
+      type: NodeTypes.XML_TAG,
       tagName: "child2",
       children: [{
-        type: "value",
+        type: NodeTypes.VALUE,
         value: "example",
       }],
     }],
@@ -121,20 +122,20 @@ Deno.test("it should return XMLTagNode with children (same tag)", () => {
     },
   });
   const expected: XMLTagNode[] = [{
-    type: "tag",
+    type: NodeTypes.XML_TAG,
     tagName: "parent",
     children: [{
-      type: "tag",
+      type: NodeTypes.XML_TAG,
       tagName: "child",
       children: [{
-        type: "value",
+        type: NodeTypes.VALUE,
         value: "example1",
       }],
     }, {
-      type: "tag",
+      type: NodeTypes.XML_TAG,
       tagName: "child",
       children: [{
-        type: "value",
+        type: NodeTypes.VALUE,
         value: "example2",
       }],
     }],

@@ -1,6 +1,6 @@
 {
   "name": "@taga3s/rss-generator",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "license": "MIT",
   "exports": "./mod.ts",
   "tasks": {
@@ -10,6 +10,7 @@
     "lint": "deno lint"
   },
   "imports": {
-    "@std/assert": "jsr:@std/assert@1"
+    "@std/assert": "jsr:@std/assert@1",
+    "@std/testing/snapshot": "jsr:@std/testing/snapshot"
   }
 }

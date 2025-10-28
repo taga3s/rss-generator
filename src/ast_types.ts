@@ -1,4 +1,6 @@
-export type XMLObj = { [key: string]: XMLObj | string | string[] };
+export interface XMLObj {
+  [key: string]: XMLObj | string | string[];
+}
 export type Value = string;
 
 type Input = XMLObj | XMLObj[] | string | string[];

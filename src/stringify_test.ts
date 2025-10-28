@@ -1,10 +1,15 @@
 import { assertEquals } from "@std/assert/equals";
-import type { ValueNode, XMLDeclarationNode, XMLTagNode } from "./ast.ts";
+import {
+  NodeTypes,
+  type ValueNode,
+  type XMLDeclarationNode,
+  type XMLTagNode,
+} from "./ast.ts";
 import { stringifyValueNode, stringifyXMLNode } from "./stringify.ts";
 
 Deno.test("stringify XMLNode which is DeclarationNode", () => {
   const node: XMLDeclarationNode = {
-    type: "declaration",
+    type: NodeTypes.XML_DECLARATION,
     attributes: {
       version: "1.0",
       encoding: "UTF-8",
@@ -16,14 +21,14 @@ Deno.test("stringify XMLNode which is DeclarationNode", () => {
 
 Deno.test("stringify XMLNode with children", () => {
   const node: XMLTagNode = {
-    type: "tag",
+    type: NodeTypes.XML_TAG,
     tagName: "parent",
     children: [
       {
-        type: "tag",
+        type: NodeTypes.XML_TAG,
         tagName: "child",
         children: [{
-          type: "value",
+          type: NodeTypes.VALUE,
           value: "example",
         }],
       },
@@ -37,7 +42,7 @@ Deno.test("stringify XMLNode with children", () => {
 
 Deno.test("stringify XMLNode without children", () => {
   const node: XMLTagNode = {
-    type: "tag",
+    type: NodeTypes.XML_TAG,
     tagName: "self-closing",
     children: [],
   };
@@ -47,13 +52,13 @@ Deno.test("stringify XMLNode without children", () => {
 
 Deno.test("stringify XMLNode with attributes", () => {
   const node: XMLTagNode = {
-    type: "tag",
+    type: NodeTypes.XML_TAG,
     tagName: "example",
     attributes: {
       version: "2.0",
     },
     children: [{
-      type: "value",
+      type: NodeTypes.VALUE,
       value: "example",
     }],
   };
@@ -63,7 +68,7 @@ Deno.test("stringify XMLNode with attributes", () => {
 
 Deno.test("stringify ValueNode with value string", () => {
   const node: ValueNode = {
-    type: "value",
+    type: NodeTypes.VALUE,
     value: "example",
   };
   const expected = "example";

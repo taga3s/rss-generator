@@ -24,13 +24,14 @@ import type {
   ItemGuid,
   ItemSource,
 } from "./xmlobj_types.ts";
+import type { Undefinable } from "./utils/types.ts";
 
 const genOptionalProps = <TObject>() => {
   const optionalProps = <TValue, TTransformed = TValue>(
     key: keyof TObject,
     value: TValue | undefined,
     transform?: (value: TValue) => TTransformed,
-  ): { [key: string]: TTransformed | NonNullable<TValue> } | undefined => {
+  ): Undefinable<{ [key: string]: TTransformed | NonNullable<TValue> }> => {
     if (!value) {
       return undefined;
     }
@@ -108,10 +109,9 @@ export const buildXMLObj = (input: {
         ...optionalProps<string>("pubDate", channel.pubDate),
         ...optionalProps<string>("rating", channel.rating),
         ...optionalProps<SkipDays[]>("skipDays", channel.skipDays),
-        ...optionalProps<number, string>(
+        ...optionalProps<string>(
           "skipHours",
-          channel.skipHours,
-          toChannelSkipHours,
+          channel.skipHours?.toString(),
         ),
         ...optionalProps<TextInput, ChannelTextInput>(
           "textInput",
@@ -182,15 +182,11 @@ const toChannelTextInput = (data: TextInput): ChannelTextInput => ({
   link: data.link,
 });
 
-const toChannelAtomLink = (data: AtomLink): ChannelAtomLink => {
-  return {
-    "@href": data.href,
-    "@rel": data.rel,
-    "@type": data.type,
-  };
-};
-
-const toChannelSkipHours = (value: number): string => value.toString();
+const toChannelAtomLink = (data: AtomLink): ChannelAtomLink => ({
+  "@href": data.href,
+  "@rel": data.rel,
+  "@type": data.type,
+});
 
 const toChannelItems = (data: Item[]): ChannelItem[] => {
   const optionalProps = genOptionalProps<ChannelItem>();
@@ -207,10 +203,9 @@ const toChannelItems = (data: Item[]): ChannelItem[] => {
     ...optionalProps<string[]>("category", item.category),
     ...optionalProps<string>("dc:creator", item.dc?.creator),
     ...optionalProps<string>("comments", item.comments),
-    ...optionalProps<number, string>(
+    ...optionalProps<string>(
       "slash:comments",
-      item.slash?.comments,
-      toItemSlashComments,
+      item.slash?.comments?.toString(),
     ),
     ...optionalProps<Enclosure, ItemEnclosure>(
       "enclosure",
@@ -243,8 +238,6 @@ const toItemGuid = (data: Guid): ItemGuid => ({
   $value: data.value,
   "@isPermaLink": data.isPermaLink ? "true" : "false",
 });
-
-const toItemSlashComments = (data: number): string => data.toString();
 
 const toItemSource = (data: Source): ItemSource => ({
   $value: data.value,

@@ -1,4 +1,9 @@
-import type { ValueNode, XMLDeclarationNode, XMLTagNode } from "./ast.ts";
+import {
+  NodeTypes,
+  type ValueNode,
+  type XMLDeclarationNode,
+  type XMLTagNode,
+} from "./ast.ts";
 
 export const stringifyValueNode = (node: ValueNode): string => {
   return `${node.value}`;
@@ -11,20 +16,28 @@ export const stringifyNodes = (
   childrenType: "tags" | "value";
   value: string;
 } => {
-  if (children[0].type === "value") {
+  if (children.length === 0) {
+    return {
+      childrenType: "value",
+      value: "",
+    };
+  }
+
+  if (children[0].type === NodeTypes.VALUE) {
     return {
       childrenType: "value",
       value: stringifyValueNode(children[0]),
     };
   }
 
-  const stringifiedXMLNodes: string[] = children.filter((child) =>
-    child.type === "tag"
-  ).map((child) => stringifyXMLNode(child, indentLevel));
+  const stringifiedXMLNodes = children.filter((child) =>
+    child.type === NodeTypes.XML_TAG
+  )
+    .map((child) => stringifyXMLNode(child, indentLevel));
 
   return {
     childrenType: "tags",
-    value: `${stringifiedXMLNodes.join("\n")}`,
+    value: stringifiedXMLNodes.join("\n"),
   };
 };
 
@@ -44,7 +57,7 @@ export const stringifyXMLNode = (
     ? _stringifyAttributes(node.attributes)
     : "";
 
-  if (node.type === "declaration") {
+  if (node.type === NodeTypes.XML_DECLARATION) {
     return `<?xml${_stringifyAttributes(node.attributes)}?>`;
   }
 
@@ -70,12 +83,15 @@ export const stringifyXMLNode = (
   }
 };
 
+const INIT_INDENT_LEVEL = 0;
+
 /**
  * Converts an array of XMLNodes to a XML String. This is an entry point.
  */
 export const stringify = (
   nodes: (XMLDeclarationNode | XMLTagNode)[],
 ): string => {
-  const indentLevel = 0;
-  return nodes.map((node) => stringifyXMLNode(node, indentLevel)).join("\n");
+  return nodes.map((node) => stringifyXMLNode(node, INIT_INDENT_LEVEL)).join(
+    "\n",
+  );
 };
