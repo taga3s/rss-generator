@@ -61,7 +61,6 @@ export interface ChannelItem {
   "dc:creator"?: string;
   category?: string;
   comments?: string;
-  "slash:comments"?: string;
   enclosure?: ItemEnclosure;
   guid?: ItemGuid;
   pubDate?: string;
