@@ -6,8 +6,6 @@ const channel: Channel = {
   atom: {
     link: {
       href: "https://example.com/rss.xml",
-      rel: "self",
-      type: "application/atom+xml",
     },
   },
   description: cdata("Example description"),

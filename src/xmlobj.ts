@@ -1,5 +1,4 @@
 import {
-  type AtomLink,
   type Channel,
   type Cloud,
   type Enclosure,
@@ -14,7 +13,6 @@ import {
 } from "./generate-rss_types.ts";
 import type { XMLObj } from "./ast_types.ts";
 import type {
-  ChannelAtomLink,
   ChannelBase,
   ChannelCloud,
   ChannelImage,
@@ -57,6 +55,9 @@ const insertNamespacesAttrs = (
   return ret;
 };
 
+const DEFAULT_ATOM_LINK_REL = "self";
+const DEFAULT_ATOM_LINK_REL_TYPE = "application/rss+xml";
+
 export const buildXMLObj = (input: {
   channel: Channel;
   items?: Item[];
@@ -82,11 +83,11 @@ export const buildXMLObj = (input: {
         title: channel.title,
         description: channel.description,
         link: channel.link,
-        ...optionalProps<AtomLink, ChannelAtomLink>(
-          "atom:link",
-          channel.atom?.link,
-          toChannelAtomLink,
-        ),
+        "atom:link": {
+          "@href": channel.atom.link.href,
+          "@rel": channel.atom.link.rel ?? DEFAULT_ATOM_LINK_REL,
+          "@type": channel.atom.link.type ?? DEFAULT_ATOM_LINK_REL_TYPE,
+        },
         ...optionalProps<string[]>("category", channel.category),
         ...optionalProps<Cloud, ChannelCloud>(
           "cloud",
@@ -184,12 +185,6 @@ const toChannelTextInput = (data: TextInput): ChannelTextInput => ({
   description: data.description,
   name: data.name,
   link: data.link,
-});
-
-const toChannelAtomLink = (data: AtomLink): ChannelAtomLink => ({
-  "@href": data.href,
-  "@rel": data.rel,
-  "@type": data.type,
 });
 
 const toChannelItems = (data: Item[]): ChannelItem[] => {

@@ -1,7 +1,7 @@
 import { isObject, isString } from "./utils/types.ts";
 
 export interface XMLObj {
-  [key: string]: XMLObj | string | string[];
+  [key: string | number | symbol]: XMLObj | string | string[];
 }
 export type Value = string;
 

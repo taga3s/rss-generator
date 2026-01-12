@@ -3,6 +3,11 @@ export interface Channel {
 
   link: string;
 
+  // Following http://www.w3.org/2005/Atom.
+  atom: {
+    link: AtomLink;
+  };
+
   description: string;
 
   language?: string;
@@ -36,11 +41,6 @@ export interface Channel {
   skipDays?: SkipDays[];
 
   skipHours?: number;
-
-  // Following http://www.w3.org/2005/Atom.
-  atom?: {
-    link?: AtomLink;
-  };
 }
 
 export interface Cloud {
@@ -99,9 +99,9 @@ export type SkipDays =
 export interface AtomLink {
   href: string;
 
-  rel: "alternate" | "enclosure" | "related" | "self" | "via";
+  rel?: "alternate" | "enclosure" | "related" | "self" | "via";
 
-  type: string;
+  type?: string;
 }
 
 export interface Item {

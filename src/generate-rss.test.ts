@@ -6,15 +6,20 @@ import { assertSnapshot } from "@std/testing/snapshot";
 const fixture = (): {
   xml: string;
 } => {
-  const channel: Channel = Object.freeze({
+  const channel: Channel = {
     title: "Example Web",
     link: "https://example.com",
+    atom: {
+      link: {
+        href: "https://example.com/rss.xml",
+      },
+    },
     description: cdata("Example description"),
     ttl: 60,
     language: "en",
     category: ["sports", "politics", "technology"],
     copyright: "Example Web",
-  });
+  };
 
   const items: Item[] = [
     {

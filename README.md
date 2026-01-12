@@ -45,6 +45,11 @@ const items: Item[] = [
       encoded: cdata("<p>Example content</p>"),
     },
     link: "https://example.com/articles/1",
+    atom: {
+      link: {
+        href: "https://example.com/rss.xml",
+      },
+    },
     guid: {
       isPermaLink: true,
       value: "https://example.com/articles/1",
