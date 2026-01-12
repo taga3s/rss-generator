@@ -1,12 +1,12 @@
 import {
-  isArrayOfString,
+  isArrayOfValue,
   isArrayOfXMLObj,
-  isString,
+  isValue,
   isXMLObj,
   type Value,
   type XMLObj,
 } from "./ast_types.ts";
-import type { Undefinable } from "./utils/types.ts";
+import { isString } from "./utils/types.ts";
 
 interface Node {
   type: NodeTypes;
@@ -35,11 +35,14 @@ export interface ValueNode extends Node {
   value: string;
 }
 
+interface Attributes {
+  [key: string]: Value;
+}
 /**
  * Extract attributes which start with "@" from the input object
  */
-const extractAttrs = (input: XMLObj): { [key: string]: string } => {
-  const attributes: { [key: string]: string } = {};
+const extractAttrs = (input: XMLObj): Attributes => {
+  const attributes: Attributes = {};
   for (const key of Object.keys(input)) {
     if (key.startsWith("@") && isString(input[key])) {
       attributes[key.substring(1)] = input[key];
@@ -49,52 +52,35 @@ const extractAttrs = (input: XMLObj): { [key: string]: string } => {
   return attributes;
 };
 
-/**
- * Extract "$value" from the input object
- */
-const extractValue = (input: XMLObj): Undefinable<string> =>
-  isString(input.$value) ? input.$value : undefined;
-
 export const createXMLDeclarationNode = (
   children: XMLObj,
-): XMLDeclarationNode => {
-  const attributes = extractAttrs(children);
-  return {
-    type: NodeTypes.XML_DECLARATION,
-    attributes,
-  };
-};
+): XMLDeclarationNode => ({
+  type: NodeTypes.XML_DECLARATION,
+  attributes: extractAttrs(children),
+});
 
 export const createXMLTagNode = (
   name: string,
-  children: XMLObj | string,
+  children: XMLObj | Value,
 ): XMLTagNode => {
   if (isXMLObj(children)) {
     const attributes = extractAttrs(children);
-    const value = extractValue(children);
-
-    if (attributes || value) {
-      return {
-        type: NodeTypes.XML_TAG,
-        tagName: name,
-        ...(Object.keys(attributes).length > 0 ? { attributes } : {}),
-        children: value ? createValueNodes(value) : createXMLTagNodes(children),
-      };
-    }
-  }
-
-  if (isString(children)) {
     return {
       type: NodeTypes.XML_TAG,
       tagName: name,
-      children: createValueNodes(children),
+      ...(Object.keys(attributes).length > 0 ? { attributes } : {}),
+      children: isValue(children.$value)
+        ? createValueNodes(children.$value)
+        : createXMLTagNodes(children),
     };
   }
 
   return {
     type: NodeTypes.XML_TAG,
     tagName: name,
-    children: createXMLTagNodes(children),
+    children: isValue(children)
+      ? createValueNodes(children)
+      : createXMLTagNodes(children),
   };
 };
 
@@ -103,7 +89,7 @@ export const createXMLTagNodes = (xmlObj: XMLObj): XMLTagNode[] => {
 
   for (const [key, value] of Object.entries(xmlObj)) {
     // If the value is an array, create multiple nodes
-    if (isArrayOfXMLObj(value) || isArrayOfString(value)) {
+    if (isArrayOfXMLObj(value) || isArrayOfValue(value)) {
       for (const v of value) {
         nodes.push(createXMLTagNode(key, v));
       }
