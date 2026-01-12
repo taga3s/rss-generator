@@ -26,7 +26,7 @@ const fixture = (): {
       title: "Example Title 1",
       description: cdata("Example description"),
       content: {
-        encoded: cdata("<p>Full content</p>"),
+        encoded: cdata("<p>Example content</p>"),
       },
       link: "https://example.com/articles/1",
       guid: {
@@ -39,7 +39,7 @@ const fixture = (): {
       title: "Example Title 2",
       description: cdata("Example description"),
       content: {
-        encoded: cdata("<p>Full content</p>"),
+        encoded: cdata("<p>Example content</p>"),
       },
       link: "https://example.com/articles/2",
       guid: {
