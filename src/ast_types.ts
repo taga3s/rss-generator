@@ -1,3 +1,5 @@
+import { isObject, isString } from "./utils/types.ts";
+
 export interface XMLObj {
   [key: string]: XMLObj | string | string[];
 }
@@ -6,7 +8,7 @@ export type Value = string;
 type Input = XMLObj | XMLObj[] | string | string[];
 
 export const isXMLObj = (input: Input): input is XMLObj => {
-  return typeof input === "object" && input !== null;
+  return isObject(input);
 };
 
 export const isArrayOfXMLObj = (
@@ -16,15 +18,15 @@ export const isArrayOfXMLObj = (
     input.every(isXMLObj);
 };
 
-export const isString = (
+export const isValue = (
   input: Input,
-): input is string => {
-  return typeof input === "string";
+): input is Value => {
+  return isString(input);
 };
 
-export const isArrayOfString = (
+export const isArrayOfValue = (
   input: Input,
-): input is string[] => {
+): input is Value[] => {
   return Array.isArray(input) &&
-    input.every(isString);
+    input.every(isValue);
 };

@@ -6,7 +6,7 @@ import { assertSnapshot } from "@std/testing/snapshot";
 const fixture = (): {
   xml: string;
 } => {
-  const channel: Channel = {
+  const channel: Channel = Object.freeze({
     title: "Example Web",
     link: "https://example.com",
     description: cdata("Example description"),
@@ -14,7 +14,7 @@ const fixture = (): {
     language: "en",
     category: ["sports", "politics", "technology"],
     copyright: "Example Web",
-  };
+  });
 
   const items: Item[] = [
     {
