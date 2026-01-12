@@ -1,10 +1,4 @@
-import {
-  cdata,
-  type Channel,
-  generateRSS,
-  type Item,
-  type Namespaces,
-} from "../../src/mod.ts";
+import { cdata, type Channel, generateRSS, type Item } from "../../src/mod.ts";
 
 const channel: Channel = {
   title: "Example Web",
@@ -58,10 +52,8 @@ const items: Item[] = [
   },
 ];
 
-const namespaces: Namespaces = ["atom", "content", "dc"];
-
 if (import.meta.main) {
-  const xml = generateRSS({ channel, items, namespaces });
+  const xml = generateRSS({ channel, items });
   const data = new TextEncoder().encode(xml);
   await Deno.writeFile("rss.xml", data);
 }

@@ -1,6 +1,6 @@
 import { stringify } from "./stringify.ts";
 import { createXMLTree } from "./ast.ts";
-import type { Channel, Item, Namespaces } from "./generate-rss_types.ts";
+import type { Channel, Item } from "./generate-rss_types.ts";
 import { buildXMLObj } from "./xmlobj.ts";
 
 /**
@@ -9,11 +9,11 @@ import { buildXMLObj } from "./xmlobj.ts";
  * @returns RSS feed as string
  */
 export const generateRSS = (
-  data: { channel: Channel; items?: Item[]; namespaces?: Namespaces },
+  data: { channel: Channel; items?: Item[] },
 ): string => {
-  const { channel, items, namespaces } = data;
+  const { channel, items } = data;
 
-  const xmlObj = buildXMLObj({ channel, items, namespaces });
+  const xmlObj = buildXMLObj({ channel, items });
 
   const xmlTree = createXMLTree(xmlObj);
 

@@ -166,7 +166,6 @@ export const NAMESPACE_URLS = {
   atom: "http://www.w3.org/2005/Atom",
   content: "http://purl.org/rss/1.0/modules/content/",
   dc: "http://purl.org/dc/elements/1.1/",
-  slash: "http://purl.org/rss/1.0/modules/slash/",
 } as const;
 
 export type Namespaces = (keyof typeof NAMESPACE_URLS)[];

@@ -7,7 +7,6 @@ export type {
   Guid,
   Image,
   Item,
-  Namespaces,
   SkipDays,
   Source,
   TextInput,

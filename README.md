@@ -25,7 +25,6 @@ import {
   type Channel,
   generateRSS,
   type Item,
-  type Namespaces,
 } from "jsr:@taga3s/rss-generator";
 
 const channel: Channel = {
@@ -67,10 +66,8 @@ const items: Item[] = [
   },
 ];
 
-const namespaces: Namespaces = ["atom", "content", "dc", "slash"];,
-
 if (import.meta.main) {
-  const xml = generateRSS({ channel, items, namespaces });
+  const xml = generateRSS({ channel, items });
   const data = new TextEncoder().encode(xml);
   await Deno.writeFile("rss.xml", data);
 }

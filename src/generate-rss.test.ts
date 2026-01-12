@@ -1,6 +1,6 @@
 import { cdata } from "./cdata.ts";
 import { generateRSS } from "./generate-rss.ts";
-import type { Channel, Item, Namespaces } from "./generate-rss_types.ts";
+import type { Channel, Item } from "./generate-rss_types.ts";
 import { assertSnapshot } from "@std/testing/snapshot";
 
 const fixture = (): {
@@ -45,10 +45,8 @@ const fixture = (): {
     },
   ];
 
-  const namespaces: Namespaces = ["atom", "content", "dc", "slash"];
-
   return {
-    xml: generateRSS({ channel, items, namespaces }),
+    xml: generateRSS({ channel, items }),
   };
 };
 
