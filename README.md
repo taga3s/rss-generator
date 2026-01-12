@@ -10,12 +10,6 @@ purpose, so the implementation is intentionally minimal.
 - Generates RSS 2.0 XML (following the
   [RSS 2.0 Specification](https://www.rssboard.org/rss-specification))
 - Zero dependencies
-- Supports a few Namespace (based on
-  [Best Practices Profile 5. Namespace Elements](https://www.rssboard.org/rss-profile#namespace-elements))
-  - [x] [atom](http://www.w3.org/2005/Atom)
-  - [x] [content](http://purl.org/rss/1.0/modules/content/)
-  - [x] [dc](http://purl.org/dc/elements/1.1/)
-  - [x] [slash](http://purl.org/rss/1.0/modules/slash/)
 
 ## example usage
 
@@ -45,6 +39,11 @@ const items: Item[] = [
       encoded: cdata("<p>Example content</p>"),
     },
     link: "https://example.com/articles/1",
+    atom: {
+      link: {
+        href: "https://example.com/rss.xml",
+      },
+    },
     guid: {
       isPermaLink: true,
       value: "https://example.com/articles/1",
