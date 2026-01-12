@@ -17,7 +17,7 @@ snapshot[`generateRSS 1`] = `
     <item>
       <title>Example Title 1</title>
       <description><![CDATA[Example description]]></description>
-      <content:encoded><![CDATA[<p>Example content</p>]]></content:encoded>
+      <content:encoded><![CDATA[<p>Full content</p>]]></content:encoded>
       <link>https://example.com/articles/1</link>
       <guid isPermaLink="true">https://example.com/articles/1</guid>
       <pubDate>Sun, 27 Apr 2025 03:24:20 GMT</pubDate>
@@ -25,7 +25,7 @@ snapshot[`generateRSS 1`] = `
     <item>
       <title>Example Title 2</title>
       <description><![CDATA[Example description]]></description>
-      <content:encoded><![CDATA[<p>Example content</p>]]></content:encoded>
+      <content:encoded><![CDATA[<p>Full content</p>]]></content:encoded>
       <link>https://example.com/articles/2</link>
       <guid isPermaLink="true">https://example.com/articles/2</guid>
       <pubDate>Sun, 27 Apr 2025 03:24:20 GMT</pubDate>

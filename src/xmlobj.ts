@@ -202,10 +202,6 @@ const toChannelItems = (data: Item[]): ChannelItem[] => {
     ...optionalProps<string[]>("category", item.category),
     ...optionalProps<string>("dc:creator", item.dc?.creator),
     ...optionalProps<string>("comments", item.comments),
-    ...optionalProps<string>(
-      "slash:comments",
-      item.slash?.comments?.toString(),
-    ),
     ...optionalProps<Enclosure, ItemEnclosure>(
       "enclosure",
       item.enclosure,

@@ -135,11 +135,6 @@ export interface Item {
     creator?: string;
     // TODO: Add other properties.
   };
-
-  // Following http://purl.org/rss/1.0/modules/slash/.
-  slash?: {
-    comments?: number;
-  };
 }
 
 export interface Enclosure {
