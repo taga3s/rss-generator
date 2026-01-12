@@ -43,7 +43,7 @@ const genOptionalProps = <TObject>() => {
   return optionalProps;
 };
 
-const buildNamespacesAttrs = (
+const insertNamespacesAttrs = (
   namespaces: Namespaces,
 ): { [key: string]: string } => {
   const ret: { [key: string]: string } = {};
@@ -60,9 +60,8 @@ const buildNamespacesAttrs = (
 export const buildXMLObj = (input: {
   channel: Channel;
   items?: Item[];
-  namespaces?: Namespaces;
 }): XMLObj => {
-  const { channel, items, namespaces } = input;
+  const { channel, items } = input;
 
   const optionalProps = genOptionalProps<ChannelBase>();
 
@@ -73,7 +72,12 @@ export const buildXMLObj = (input: {
     },
     rss: {
       "@version": "2.0",
-      ...(namespaces && buildNamespacesAttrs(namespaces)),
+      // Treat them as default namespaces
+      ...insertNamespacesAttrs([
+        "content",
+        "dc",
+        "atom",
+      ]),
       channel: {
         title: channel.title,
         description: channel.description,
