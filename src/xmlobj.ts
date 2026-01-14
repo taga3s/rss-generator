@@ -60,9 +60,8 @@ const DEFAULT_ATOM_LINK_REL_TYPE = "application/rss+xml";
 
 export const buildXMLObj = (input: {
   channel: Channel;
-  items?: Item[];
 }): XMLObj => {
-  const { channel, items } = input;
+  const { channel } = input;
 
   const optionalProps = genOptionalProps<ChannelBase>();
 
@@ -133,7 +132,7 @@ export const buildXMLObj = (input: {
         ),
         ...optionalProps<Item[], ChannelItem[]>(
           "item",
-          items,
+          channel.items,
           toChannelItems,
         ),
       },
