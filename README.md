@@ -21,16 +21,6 @@ import {
   type Item,
 } from "jsr:@taga3s/rss-generator";
 
-const channel: Channel = {
-  title: "Example Web",
-  link: "https://example.com",
-  description: cdata("Example description"),
-  ttl: 60,
-  language: "en",
-  category: ["sports", "politics", "technology"],
-  copyright: "Example Web",
-};
-
 const items: Item[] = [
   {
     title: "Example Title 1",
@@ -65,8 +55,19 @@ const items: Item[] = [
   },
 ];
 
+const channel: Channel = {
+  title: "Example Web",
+  link: "https://example.com",
+  description: cdata("Example description"),
+  ttl: 60,
+  language: "en",
+  category: ["sports", "politics", "technology"],
+  copyright: "Example Web",
+  items: items,
+};
+
 if (import.meta.main) {
-  const xml = generateRSS({ channel, items });
+  const xml = generateRSS({ channel });
   const data = new TextEncoder().encode(xml);
   await Deno.writeFile("rss.xml", data);
 }
