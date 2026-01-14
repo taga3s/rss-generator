@@ -41,6 +41,8 @@ export interface Channel {
   skipDays?: SkipDays[];
 
   skipHours?: number;
+
+  items?: Item[];
 }
 
 export interface Cloud {
